@@ -4,9 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#0c0c0e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/favicon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="NEXA Fit">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>NEXA · Fit</title>
 <meta name="description" content="Registro de entrenamiento para alumnos">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -213,7 +220,7 @@ body.light .kgfield input{background:rgba(255,255,255,.75)}
   background:rgba(245,200,122,.07);font-size:11.5px;color:var(--accent3);line-height:1.45;
 }
 .gbar{display:none;padding:12px 0 1px}
-.topbar.busy{padding:10px 18px}
+.topbar.busy{padding:calc(10px + env(safe-area-inset-top)) 18px 10px}
 .topbar.busy .tb-row{display:none}
 .topbar.busy .gbar{padding:0}
 .gbar.on{display:block}
@@ -331,7 +338,7 @@ body.light #dArea{background:rgba(255,255,255,.75)}
 
 /* TOPBAR */
 .topbar{
-  position:sticky;top:0;z-index:60;padding:14px 18px 12px;
+  position:sticky;top:0;z-index:60;padding:calc(14px + env(safe-area-inset-top)) 18px 12px;
   background:var(--surface);border-bottom:1px solid var(--border);
 }
 .tb-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -698,6 +705,12 @@ body.light .rday-h input{background:rgba(255,255,255,.75)}
 .cons div{height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono';font-size:10px;color:var(--muted)}
 .cons div.p1{background:rgba(200,245,122,.25);color:var(--text)}
 .cons div.p2{background:rgba(200,245,122,.55);color:#0d0d0f}
+.inst{display:flex;gap:12px;align-items:center}
+.inst img{width:46px;height:46px;border-radius:11px;flex-shrink:0}
+.inst .t{font-size:13.5px;font-weight:600}
+.inst .s{font-size:11.5px;color:var(--text-dim);line-height:1.45;margin-top:2px}
+.inst-steps{font-size:12px;color:var(--text-dim);line-height:1.6;margin-top:10px}
+.inst-steps b{color:var(--text);font-weight:600}
 .cons div.p3{background:var(--accent);color:#0d0d0f;font-weight:600}
 body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 </style>
@@ -732,6 +745,7 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
     <div id="hoyPlan"></div>
     <div class="wk" id="wkStrip"></div>
   </div>
+  <div class="card" id="installCard" style="display:none"></div>
   <div id="hoyWarn"></div>
   <div class="card" id="blockCard"></div>
 
@@ -1102,6 +1116,9 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 
   <div class="brow" style="margin-top:4px"><button class="btn gh" onclick="closeSheet('ovlCfg')">Cancelar</button><button class="btn acc" onclick="saveCfg()">Guardar</button></div>
 
+  <div class="sec-t">App en el móvil</div>
+  <div id="cfgApp"></div>
+
   <div class="sec-t">Privacidad</div>
   <button class="btn gh full sm" onclick="openPriv()">Aviso de privacidad</button>
   <button class="btn gh full sm" style="margin-top:6px" onclick="closeSheet('ovlCfg');expJSON()">Descargar una copia de mis datos</button>
@@ -1365,7 +1382,7 @@ async function onAuth(ev,session){
   if(recovering)return;
   if(session&&session.user){
     if(started&&USER&&USER.id===session.user.id)return;
-    USER=session.user;hideAuth();await startApp();
+    USER=session.user;S.set(KEY+'_last',JSON.stringify({id:USER.id,email:USER.email}));hideAuth();await startApp();
   }else if(ev==='SIGNED_OUT'||ev==='INITIAL_SESSION'){
     USER=null;started=false;
     if(!document.getElementById('auth').classList.contains('on'))showAuth();
@@ -1374,7 +1391,7 @@ async function onAuth(ev,session){
 async function logout(){
   closeSheet('ovlAsk');closeSheet('ovlCfg');
   if(DB._dirty||pushT){const ok=await push();if(!ok){toast('Sin conexión: no se pudo guardar en la nube');return}}
-  S.del(uKey());S.del(bKey());BODY.key=null;BODY.data=null;
+  S.del(uKey());S.del(bKey());S.del(KEY+'_last');BODY.key=null;BODY.data=null;
   DB=freshDB();started=false;
   if(sb)await sb.auth.signOut();
   USER=null;showAuth('Sesión cerrada.',true);
@@ -1393,7 +1410,7 @@ async function doDelete(){
     const {error}=await sb.rpc('delete_my_account');
     if(error){toast('No se pudo eliminar. Revisa tu conexión');return}
   }
-  S.del(uKey());S.del(bKey());BODY.key=null;BODY.data=null;DB=freshDB();started=false;
+  S.del(uKey());S.del(bKey());S.del(KEY+'_last');BODY.key=null;BODY.data=null;DB=freshDB();started=false;
   closeSheet('ovlAsk');closeSheet('ovlCfg');
   if(CLOUD&&sb){await sb.auth.signOut();USER=null;showAuth('Cuenta eliminada. Tus datos se han borrado.',true)}
   else{toast('Datos borrados');startApp()}
@@ -1888,6 +1905,7 @@ function renderHoy(){
      '<button class="btn sm" onclick="addQuick(\'Atún al natural\',60,14)">+ Atún · 14 g</button></div>';
 
   renderBodyCard();
+  renderInstall();
 }
 const st=(v,u,l)=>'<div class="stat"><div class="v">'+v+' <span class="u">'+u+'</span></div><div class="l">'+l+'</div></div>';
 function tSupp(id){const d=T();DB.supp[d]=DB.supp[d]||{};DB.supp[d][id]=!DB.supp[d][id];save();renderDiet()}
@@ -2798,6 +2816,7 @@ function openCfg(){
     const el=document.getElementById(id);el.classList.toggle('on',!!on);el.querySelector('.chk-box').textContent=on?'✓':'';
   });
   document.getElementById('btnLock').style.display=BODY.key?'':'none';
+  renderInstall();
   document.getElementById('cfgK').value=c.k;document.getElementById('cfgP').value=c.p;
   document.getElementById('cfgF').value=c.f;document.getElementById('cfgC').value=c.c;
   document.getElementById('ovlCfg').classList.add('on');
@@ -3085,6 +3104,41 @@ function delCustom(){
   closeSheet('ovlCus');planChanged('Ejercicio eliminado de tu rutina');
 }
 
+/* ═════ APP INSTALABLE (PWA) ═════ */
+let installEvt=null;
+const isStandalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+const isIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const isMobile=()=>isIOS()||/android|mobile/i.test(navigator.userAgent);
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;renderInstall()});
+window.addEventListener('appinstalled',()=>{installEvt=null;S.set(KEY+'_instHide','1');renderInstall();toast('App instalada')});
+function installSteps(){
+  if(isIOS())return 'En Safari: pulsa <b>Compartir</b> (el cuadrado con la flecha hacia arriba) → <b>Añadir a pantalla de inicio</b> → <b>Añadir</b>.';
+  return 'En Chrome: pulsa el menú <b>⋮</b> → <b>Instalar aplicación</b> (o <b>Añadir a pantalla de inicio</b>).';
+}
+async function doInstall(){
+  if(!installEvt){toast('Sigue los pasos de abajo');return}
+  installEvt.prompt();
+  const r=await installEvt.userChoice.catch(()=>null);
+  installEvt=null;renderInstall();
+  if(r&&r.outcome==='accepted')S.set(KEY+'_instHide','1');
+}
+function hideInstall(){S.set(KEY+'_instHide','1');renderInstall()}
+function renderInstall(){
+  const card=document.getElementById('installCard'),cfg=document.getElementById('cfgApp');
+  const inst=isStandalone();
+  if(cfg)cfg.innerHTML=inst
+    ?'<div class="note" style="margin:0">Ya la estás usando como app.</div>'
+    :(installEvt?'<button class="btn acc full sm" onclick="doInstall()">Instalar NEXA Fit</button>':'')+
+     '<div class="note" style="margin:'+(installEvt?'8px':'0')+' 0 0">'+(installEvt?'O manualmente. ':'')+installSteps()+'</div>';
+  if(!card)return;
+  const show=!inst&&isMobile()&&S.get(KEY+'_instHide')!=='1';
+  card.style.display=show?'':'none';
+  if(show)card.innerHTML='<div class="inst"><img src="icons/icon-192.png" alt=""><div><div class="t">Instala NEXA Fit en tu móvil</div>'+
+    '<div class="s">Se abre a pantalla completa, como cualquier app, y funciona aunque no tengas cobertura en el gimnasio.</div></div></div>'+
+    (installEvt?'<button class="btn acc full" style="margin-top:12px" onclick="doInstall()">Instalar</button>':'<div class="inst-steps">'+installSteps()+'</div>')+
+    '<button class="btn gh full sm" style="margin-top:8px" onclick="hideInstall()">Ahora no</button>';
+}
+
 /* ═════ INIT ═════ */
 function setStoreNote(){
   document.getElementById('storeNote').innerHTML=!S.ok
@@ -3109,6 +3163,7 @@ async function startApp(){
 }
 function boot(){
   applyTheme();
+  if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
   document.addEventListener('gesturestart',e=>e.preventDefault());
   window.addEventListener('resize',()=>{if(cur==='progreso')drawAll()});
   document.addEventListener('visibilitychange',()=>{
@@ -3119,6 +3174,9 @@ function boot(){
   window.addEventListener('online',()=>{if(started&&DB._dirty)push()});
   if(!CLOUD){startApp();return}
   if(!window.supabase){
+    // sin conexión y sin la librería: si ya había una sesión en este dispositivo, se abre en modo sin conexión
+    let last=null;try{last=JSON.parse(S.get(KEY+'_last')||'null')}catch(e){}
+    if(last&&last.id&&S.get(KEY+'_'+last.id)){USER=last;startApp().then(()=>{syncDot('err');toast('Sin conexión: se sincronizará al volver')});return}
     showAuth('No se pudo conectar con el servicio de cuentas. Revisa tu conexión y recarga la página.');
     document.getElementById('auGo').disabled=true;return;
   }
