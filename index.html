@@ -613,6 +613,11 @@ body.light .wk div.on{color:#fff}
 .wk div.rest{border-style:dashed;border-color:var(--border-light)}
 .wk div.today{box-shadow:0 0 0 2px var(--accent-soft)}
 
+#flash{position:fixed;inset:0;z-index:600;pointer-events:none;opacity:0;background:var(--accent)}
+#flash.on{animation:flashOn 1.4s ease-out!important}
+#flash.soft{animation:flashSoft .5s ease-out!important}
+@keyframes flashOn{0%{opacity:.55}20%{opacity:0}40%{opacity:.45}60%{opacity:0}75%{opacity:.3}100%{opacity:0}}
+@keyframes flashSoft{0%{opacity:.18}100%{opacity:0}}
 /* ═════ MÓDULOS ═════ */
 body.no-diet .mod-diet{display:none!important}
 body.no-body .mod-body{display:none!important}
@@ -1207,6 +1212,7 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 
 
 <div class="toast" id="toast"></div>
+<div id="flash" aria-hidden="true"></div>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
@@ -2123,9 +2129,11 @@ function openGuided(day){
   document.getElementById('gbar').classList.remove('on');
   document.querySelector('.topbar').classList.remove('busy');
   document.getElementById('ovlGS').classList.add('on');
+  keepAwake(true);
   renderGS();
 }
 function closeGS(){
+  keepAwake(false);
   clearInterval(GS.tI);clearInterval(GS.wI);GS.wOn=false;GS.wEl=0;GS.min=0;
   document.getElementById('gbar').classList.remove('on');
   document.querySelector('.topbar').classList.remove('busy');
@@ -2280,19 +2288,23 @@ function renderGS(){
 function wToggle(){
   const p=PLAN[GS.day],e=p.ex[GS.ei];
   if(!GS.wOn){
-    GS.wEl=0;GS.wOn=true;drawWT();
+    GS.wEl=0;GS.wOn=true;GS.wStart=Date.now();drawWT();
     const act=document.getElementById('wAct');
     if(act)act.textContent='parar y anotar';
     const lo=e.min?e.lo*60:e.lo,hi=e.min?e.hi*60:e.hi;
+    clearInterval(GS.wI);
+    // se calcula con la hora real: si el móvil se bloquea, al volver marca el tiempo correcto
     GS.wI=setInterval(()=>{
-      GS.wEl++;drawWT();
-      if(GS.wEl===lo&&lo!==hi&&navigator.vibrate)navigator.vibrate(70);
-      if(GS.wEl===hi){ding();if(navigator.vibrate)navigator.vibrate([200,90,200])}
-    },1000);
+      const el=Math.floor((Date.now()-GS.wStart)/1000);if(el===GS.wEl)return;
+      const prev=GS.wEl;GS.wEl=el;drawWT();
+      if(prev<lo&&el>=lo&&lo!==hi)buzz(70);
+      if(prev<hi&&el>=hi)ding();
+    },250);
     return;
   }
   // parar → guardar → descanso, todo en un toque
   clearInterval(GS.wI);GS.wOn=false;
+  if(GS.wStart)GS.wEl=Math.floor((Date.now()-GS.wStart)/1000);
   const val=e.min?Math.max(1,Math.round(GS.wEl/60)):GS.wEl;
   if(val<=0){toast('El cronómetro no llegó a correr');return}
   const d=T();DB.sess[d]=DB.sess[d]||{day:GS.day,ex:{}};DB.sess[d].day=GS.day;
@@ -2404,17 +2416,24 @@ function gSkip(){
   gAdvance();renderGS();
 }
 function gStart(sec){
-  GS.tT=sec;GS.tL=sec;clearInterval(GS.tI);drawGT();
-  GS.tI=setInterval(()=>{
-    GS.tL--;drawGT();
-    if(GS.tL<=0){
-      clearInterval(GS.tI);ding();gAdvance();renderGS();
-      const ne=PLAN[GS.day].ex[GS.ei];
-      if(GS.ph==='set'&&ne&&ne.seg&&!GS.wOn)wToggle();
-    }
-  },1000);
+  GS.tT=sec;GS.tL=sec;GS.tEnd=Date.now()+sec*1000;clearInterval(GS.tI);drawGT();
+  GS.tI=setInterval(gTick,250);
 }
-function gAdd(s){GS.tL+=s;GS.tT=Math.max(GS.tT,GS.tL);drawGT()}
+// cuenta atrás con la hora real de fin: sigue siendo exacta aunque el móvil se bloquee
+function gTick(){
+  if(!GS.tEnd)return;
+  const L=Math.max(0,Math.ceil((GS.tEnd-Date.now())/1000));
+  if(L!==GS.tL){
+    const prev=GS.tL;GS.tL=L;drawGT();
+    if(L>0&&((prev>10&&L<=10)||(prev>3&&L<=3)))buzz(60);
+  }
+  if(L<=0){
+    clearInterval(GS.tI);GS.tEnd=0;ding();gAdvance();renderGS();
+    const ne=PLAN[GS.day].ex[GS.ei];
+    if(GS.ph==='set'&&ne&&ne.seg&&!GS.wOn)wToggle();
+  }
+}
+function gAdd(s){GS.tEnd+=s*1000;GS.tL+=s;GS.tT=Math.max(GS.tT,GS.tL);drawGT()}
 function drawGT(){
   const L=Math.max(0,GS.tL),m=Math.floor(L/60),sc=L%60;
   const txt=m+':'+String(sc).padStart(2,'0');
@@ -2429,7 +2448,6 @@ function drawGT(){
   const bt=document.getElementById('gbT'),bs=document.getElementById('gbSub');
   if(bt&&GS.min){bt.textContent=txt;bt.style.color=col;}
   if(bs&&GS.min)bs.textContent=GS.sw&&L>5?'Cambio de lado':(L<=10?'Prepárate':'Descanso');
-  if(L===10||L===3){if(navigator.vibrate)navigator.vibrate(60)}
 }
 
 /* ═════ ENTRENO ═════ */
@@ -2564,25 +2582,58 @@ function finishSession(){
 }
 
 /* ═════ TIMER ═════ */
-let tI=null,tLeft=0,tTot=0;
+let tI=null,tLeft=0,tTot=0,tEnd=0;
 function startT(sec,name,set){
-  tTot=sec;tLeft=sec;
+  tTot=sec;tLeft=sec;tEnd=Date.now()+sec*1000;
   document.getElementById('tName').textContent=name;
   document.getElementById('tSub').textContent='Tras la serie '+set;
   document.getElementById('tdock').classList.add('on');
   clearInterval(tI);drawT();
-  tI=setInterval(()=>{tLeft--;drawT();if(tLeft<=0){clearInterval(tI);ding();setTimeout(stopT,2500)}},1000);
+  tI=setInterval(()=>{
+    const L=Math.max(0,Math.ceil((tEnd-Date.now())/1000));if(L===tLeft&&L>0)return;
+    tLeft=L;drawT();if(tLeft<=0){clearInterval(tI);ding();setTimeout(stopT,2500)}
+  },250);
 }
 function drawT(){
   const m=Math.floor(Math.max(0,tLeft)/60),s=Math.max(0,tLeft)%60;
   document.getElementById('tTxt').textContent=m+':'+String(s).padStart(2,'0');
   document.getElementById('tArc').setAttribute('stroke-dashoffset',-131.9*(1-Math.max(0,tLeft)/tTot));
 }
-function addT(s){tLeft+=s;tTot=Math.max(tTot,tLeft);drawT()}
+function addT(s){tEnd+=s*1000;tLeft+=s;tTot=Math.max(tTot,tLeft);drawT()}
 function stopT(){clearInterval(tI);document.getElementById('tdock').classList.remove('on')}
-function ding(){
+/* avisos: sonido + vibración (Android) + destello en pantalla (todos, también iPhone) */
+let AC=null;
+function audioUnlock(){
   try{
-    const c=new (window.AudioContext||window.webkitAudioContext)();
+    if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==='suspended')AC.resume();
+  }catch(e){}
+}
+document.addEventListener('pointerdown',audioUnlock,{passive:true});   // iOS solo deja sonar el audio activado con un toque
+function flash(strong){
+  const f=document.getElementById('flash');if(!f)return;
+  f.classList.remove('on','soft');void f.offsetWidth;f.classList.add(strong?'on':'soft');
+}
+function buzz(ms){if(navigator.vibrate)navigator.vibrate(ms);flash(false)}
+/* pantalla encendida durante la sesión guiada (donde el navegador lo permite) */
+let WL=null;
+async function keepAwake(on){
+  try{
+    if(on&&'wakeLock' in navigator&&document.visibilityState==='visible'){
+      if(!WL){WL=await navigator.wakeLock.request('screen');WL.addEventListener('release',()=>{WL=null})}
+    }else if(!on&&WL){await WL.release();WL=null}
+  }catch(e){WL=null}
+}
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState!=='visible')return;
+  const gsOn=document.getElementById('ovlGS').classList.contains('on')||(GS.min&&GS.ph!=='intro');
+  if(gsOn)keepAwake(true);
+  if(GS.ph==='rest'&&GS.tEnd)gTick();
+});
+function ding(){
+  flash(true);
+  try{
+    audioUnlock();const c=AC;if(!c)throw 0;
     [0,180,360].forEach(d=>setTimeout(()=>{
       const o=c.createOscillator(),g=c.createGain();
       o.connect(g);g.connect(c.destination);o.frequency.value=880;o.type='sine';
