@@ -618,6 +618,61 @@ body.light .wk div.on{color:#fff}
 #flash.soft{animation:flashSoft .5s ease-out!important}
 @keyframes flashOn{0%{opacity:.55}20%{opacity:0}40%{opacity:.45}60%{opacity:0}75%{opacity:.3}100%{opacity:0}}
 @keyframes flashSoft{0%{opacity:.18}100%{opacity:0}}
+/* ═════ PERFIL · CONFIG. INICIAL · TUTORIAL ═════ */
+.prof-btn{font-family:'Syne';font-weight:700;font-size:14px}
+.prof-btn.has-name{background:var(--accent);color:#0d0d0f;border-color:var(--accent)}
+body.light .prof-btn.has-name{color:#fff}
+.avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--accent);color:#0d0d0f;font-family:'Syne';font-weight:700}
+.avatar.big{width:54px;height:54px;font-size:22px;flex-shrink:0}
+.avatar svg{width:24px;height:24px}
+.prof-h{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.prof-n{font-family:'Syne';font-size:18px;font-weight:700;line-height:1.2}
+.prof-e{font-size:12px;color:var(--text-dim);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seg-s{margin:0;padding:3px}
+.seg-s button{padding:9px 6px;font-size:12px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:10px 12px;cursor:pointer;color:var(--text);font-family:'DM Sans'}
+.opt .t{font-size:13.5px;font-weight:600}
+.opt .s{font-size:11.5px;color:var(--text-dim);margin-top:2px}
+.opt.on{border-color:var(--accent);background:var(--accent-soft)}
+.opt:active{transform:scale(.99)}
+.bf-res{margin:12px 0 10px;padding:14px;border-radius:12px;background:var(--accent-soft);border:1px solid var(--accent);text-align:center}
+.bf-res b{display:block;font-family:'Syne';font-size:30px;font-weight:700}
+.bf-res span{font-size:11.5px;color:var(--text-dim)}
+.bf-how{margin-top:12px;border:1px solid var(--border);border-radius:11px;padding:10px 12px;background:var(--surface)}
+.bf-how summary{cursor:pointer;font-size:13px;font-weight:600}
+.bf-how .klist{margin-top:6px}
+.onb{position:fixed;inset:0;z-index:240;background:var(--bg);display:none;overflow-y:auto;padding:calc(18px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom))}
+.onb.on{display:block}
+.onb-card{max-width:440px;margin:0 auto;min-height:100%;display:flex;flex-direction:column}
+.onb-dots{display:flex;gap:5px;margin:4px 0 22px}
+.onb-dots i{flex:1;height:4px;border-radius:3px;background:var(--border)}
+.onb-dots i.on{background:var(--accent)}
+.onb-dots i.now{background:var(--accent3)}
+#onbBody{flex:1}
+#onbBody h2{font-size:24px;margin-bottom:8px;line-height:1.2}
+.onb-p{font-size:13.5px;color:var(--text-dim);line-height:1.55;margin-bottom:18px}
+.onb-logo{text-align:center;margin:16px 0 18px}
+.onb-logo img{width:76px;height:76px;border-radius:20px;box-shadow:0 8px 28px var(--glow)}
+.onb-feat{display:flex;gap:13px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border)}
+.onb-feat:last-child{border-bottom:none}
+.onb-feat>b{width:36px;height:36px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.onb-feat .t{font-size:14px;font-weight:600}
+.onb-feat .s{font-size:12.5px;color:var(--text-dim);line-height:1.45;margin-top:2px}
+.onb-days{margin:8px 0 10px}
+.onb-days button{padding:12px 4px;font-size:13px}
+.onb-nav{display:flex;gap:10px;margin-top:22px;position:sticky;bottom:0;padding:10px 0 4px;background:var(--bg)}
+.onb-nav .btn{flex:1;padding:13px}
+.rec{display:inline-block;margin-top:6px;font-size:10px;font-family:'DM Mono';letter-spacing:.5px;text-transform:uppercase;color:#0d0d0f;background:var(--accent);padding:3px 8px;border-radius:20px}
+body.light .rec{color:#fff}
+.tour{position:fixed;inset:0;z-index:270;display:none}
+.tour.on{display:block}
+.tour-hole{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(0,0,0,.74),0 0 0 2px var(--accent);transition:all .3s ease;pointer-events:none}
+.tour-tip{position:fixed;left:16px;right:16px;max-width:420px;margin:0 auto;background:var(--surface);border:1px solid var(--accent);border-radius:16px;padding:14px 15px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+body.light .tour-tip{background:#fff}
+.tour-n{font-family:'DM Mono';font-size:10px;color:var(--muted);letter-spacing:1px}
+.tour-t{font-family:'Syne';font-size:17px;font-weight:700;margin:4px 0 5px}
+.tour-b{font-size:13px;color:var(--text-dim);line-height:1.5}
 /* ═════ MÓDULOS ═════ */
 body.no-diet .mod-diet{display:none!important}
 body.no-body .mod-body{display:none!important}
@@ -728,6 +783,7 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
     <div class="tb-actions">
       <button class="icon-btn" id="btnTheme" onclick="toggleTheme()" title="Tema">◐</button>
       <button class="icon-btn cfg-btn" onclick="openCfg()" title="Ajustes">⚙<i class="sync-dot" id="syncDot"></i></button>
+      <button class="icon-btn prof-btn" id="btnProfile" onclick="openProfile()" title="Mi perfil" aria-label="Mi perfil"></button>
     </div>
   </div>
   <div class="gbar" id="gbar"><div class="gbar-in" onclick="expandGS()">
@@ -773,6 +829,7 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
         <div class="fld"><label>CINTURA (cm)</label><input type="number" step="0.1" inputmode="decimal" id="inC"></div>
         <div class="fld"><label>% GRASA</label><input type="number" step="0.1" inputmode="decimal" id="inG" placeholder="opc."></div>
       </div>
+      <button class="ex-keys" style="margin:-4px 0 8px" onclick="openBF()">¿No sabes tu % de grasa? Calcúlalo con la cinta</button>
       <button class="btn acc full" onclick="saveBody()">Guardar medidas</button>
       <div class="note" id="bodyNote"></div>
     </div>
@@ -892,6 +949,7 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 
 <!-- ══ GUÍA ══ -->
 <section class="view" id="v-guia">
+  <div class="card" id="goalCard"></div>
   <div class="card">
     <div class="card-t">Cómo progresar · doble progresión</div>
     <div class="note" style="margin-top:0">
@@ -938,6 +996,11 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
       <tr><td>Semana 12</td><td>Revisión. Aquí sí cambias 1–2 ejercicios</td></tr>
     </tbody></table>
     <div class="note">No cambies de ejercicios cada mes. Sin repetir el mismo movimiento no puedes medir si progresas.</div>
+  </div>
+  <div class="card">
+    <div class="card-t">% de grasa · cómo saberlo</div>
+    <div class="note" style="margin-top:0">Con una cinta métrica y el método de la Marina de EE. UU. tienes una estimación en dos minutos. Margen típico: ±3–4 puntos. Lo importante es medirte siempre igual y mirar la tendencia, no el número de un día.</div>
+    <button class="btn gh full sm" style="margin-top:10px" onclick="openBF()">Abrir la calculadora</button>
   </div>
   <div class="card">
     <div class="card-t warn" style="color:var(--accent3)">Seguridad</div>
@@ -1091,9 +1154,6 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 <!-- ══ AJUSTES ══ -->
 <div class="ovl" id="ovlCfg" onclick="if(event.target===this)closeSheet('ovlCfg')"><div class="sheet">
   <h3>Ajustes</h3>
-  <div class="sec-t">Cuenta</div>
-  <div class="acct" id="cfgAcct"></div>
-
   <div class="sec-t">Plan</div>
   <div class="fld"><label>INICIO DEL PLAN</label><input type="date" id="cfgStart"></div>
   <div class="fld"><label>DÍAS EN QUE PUEDO ENTRENAR</label><div class="daysel" id="cfgAvail"></div>
@@ -1123,12 +1183,82 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 
   <div class="sec-t">App en el móvil</div>
   <div id="cfgApp"></div>
+  <div class="note" style="text-align:center;margin-top:16px">Tu cuenta, tus datos y la privacidad están en tu perfil <b>👤</b>.</div>
+</div></div>
+
+<!-- ══ PERFIL ══ -->
+<div class="ovl" id="ovlProf" onclick="if(event.target===this)closeSheet('ovlProf')"><div class="sheet">
+  <div class="prof-h"><div class="avatar big" id="profAv"></div><div style="min-width:0"><div class="prof-n" id="profName"></div><div class="prof-e" id="profMail"></div></div></div>
+  <div class="sec-t">Sobre ti</div>
+  <div id="profForm"></div>
+  <button class="btn acc full" onclick="saveProfile()">Guardar perfil</button>
+
+  <div class="sec-t">% de grasa</div>
+  <div class="note" style="margin:0 0 9px">Calcúlalo con una cinta métrica en dos minutos.</div>
+  <button class="btn gh full sm" onclick="openBF()">Calcular mi % de grasa</button>
+
+  <div class="sec-t">Cuenta</div>
+  <div class="acct" id="profAcct"></div>
 
   <div class="sec-t">Privacidad</div>
   <button class="btn gh full sm" onclick="openPriv()">Aviso de privacidad</button>
-  <button class="btn gh full sm" style="margin-top:6px" onclick="closeSheet('ovlCfg');expJSON()">Descargar una copia de mis datos</button>
+  <button class="btn gh full sm" style="margin-top:6px" onclick="closeSheet('ovlProf');expJSON()">Descargar una copia de mis datos</button>
   <button class="btn gh full sm danger" style="margin-top:6px" id="btnDelAcc" onclick="askDelete()">Eliminar mi cuenta y mis datos</button>
+
+  <div class="sec-t">Ayuda</div>
+  <button class="btn gh full sm" onclick="closeSheet('ovlProf');startTour()">Ver el tutorial otra vez</button>
 </div></div>
+
+<!-- ══ CALCULADORA % GRASA ══ -->
+<div class="ovl" id="ovlBF" onclick="if(event.target===this)closeSheet('ovlBF')"><div class="sheet">
+  <h3>Tu % de grasa</h3>
+  <div class="note" style="margin:-6px 0 12px">Método de la Marina de EE. UU.: solo necesitas una cinta métrica. Es una estimación (±3–4 puntos); lo útil es repetirla igual cada 2–4 semanas y mirar la tendencia.</div>
+  <div id="bfSexBox"></div>
+  <div class="f2">
+    <div class="fld"><label>ALTURA (cm)</label><input type="number" inputmode="decimal" id="bfH"></div>
+    <div class="fld"><label>CUELLO (cm)</label><input type="number" inputmode="decimal" step="0.5" id="bfN"></div>
+  </div>
+  <div class="fld"><label id="bfWaistL">CINTURA (cm)</label><input type="number" inputmode="decimal" step="0.5" id="bfW"></div>
+  <div class="fld" id="bfHipF"><label>CADERA (cm) · la parte más ancha de los glúteos</label><input type="number" inputmode="decimal" step="0.5" id="bfHip"></div>
+  <button class="btn acc full" onclick="calcBF()">Calcular</button>
+  <div id="bfRes"></div>
+  <details class="bf-how"><summary>Cómo medirte bien</summary>
+    <ul class="klist">
+      <li>Por la mañana, en ayunas y antes de entrenar.</li>
+      <li>De pie, relajado, respirando normal. No metas tripa.</li>
+      <li>Cinta horizontal, pegada a la piel pero sin apretar.</li>
+      <li><b>Cuello:</b> justo por debajo de la nuez.</li>
+      <li><b>Cintura:</b> hombres a la altura del ombligo; mujeres en la parte más estrecha.</li>
+      <li><b>Cadera</b> (mujeres): en la parte más ancha de los glúteos.</li>
+      <li>Mide dos veces cada zona y usa la media.</li>
+    </ul>
+  </details>
+  <details class="bf-how"><summary>Otros métodos</summary>
+    <table class="gt"><tbody>
+      <tr><td>Báscula de bioimpedancia (tipo InBody)</td><td>Cómoda, pero varía con el agua y la comida. Úsala siempre en las mismas condiciones.</td></tr>
+      <tr><td>Pliegues con plicómetro</td><td>Buena precisión si la hace siempre la misma persona con experiencia.</td></tr>
+      <tr><td>DEXA</td><td>La más precisa. Se hace en clínicas y es de pago.</td></tr>
+      <tr><td>Fotos y espejo</td><td>No da un número, pero muestra el cambio. Misma luz, misma hora, misma pose.</td></tr>
+    </tbody></table>
+    <div class="note">Cada método da un número distinto. <b>Compara siempre con el mismo método.</b></div>
+  </details>
+  <button class="btn full gh" style="margin-top:12px" onclick="closeSheet('ovlBF')">Cerrar</button>
+</div></div>
+
+<!-- ══ CONFIGURACIÓN INICIAL ══ -->
+<div class="onb" id="onb">
+  <div class="onb-card">
+    <div class="onb-dots" id="onbDots"></div>
+    <div id="onbBody"></div>
+    <div class="onb-nav">
+      <button class="btn gh" id="onbBack" onclick="onbGo(-1)">Atrás</button>
+      <button class="btn acc" id="onbNext" onclick="onbGo(1)">Siguiente</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TUTORIAL ══ -->
+<div class="tour" id="tour"><div class="tour-hole" id="tourHole"></div><div class="tour-tip" id="tourTip"></div></div>
 
 <!-- ══ ACTIVAR MEDIDAS ══ -->
 <div class="ovl" id="ovlBodyOn" onclick="if(event.target===this)closeSheet('ovlBodyOn')"><div class="sheet">
@@ -1139,7 +1269,7 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
   <label class="tick"><input type="checkbox" id="boAck"><span><b>Si olvido esta clave, pierdo mis medidas.</b> Nadie puede recuperarlas, tampoco mi instructor.</span></label>
   <label class="tick"><input type="checkbox" id="boRem" checked><span>Recordarla en este dispositivo</span></label>
   <div class="auth-msg" id="boMsg"></div>
-  <div class="brow"><button class="btn gh" onclick="closeSheet('ovlBodyOn')">Cancelar</button><button class="btn acc" onclick="bodyEnable()">Activar</button></div>
+  <div class="brow"><button class="btn gh" onclick="bodyOnCancel()">Cancelar</button><button class="btn acc" onclick="bodyEnable()">Activar</button></div>
 </div></div>
 
 <!-- ══ DESBLOQUEAR MEDIDAS ══ -->
@@ -1399,6 +1529,7 @@ async function logout(){
   if(DB._dirty||pushT){const ok=await push();if(!ok){toast('Sin conexión: no se pudo guardar en la nube');return}}
   S.del(uKey());S.del(bKey());S.del(KEY+'_last');BODY.key=null;BODY.data=null;
   DB=freshDB();started=false;
+  document.getElementById('onb').classList.remove('on');document.getElementById('tour').classList.remove('on');closeSheet('ovlProf');
   if(sb)await sb.auth.signOut();
   USER=null;showAuth('Sesión cerrada.',true);
 }
@@ -1417,7 +1548,7 @@ async function doDelete(){
     if(error){toast('No se pudo eliminar. Revisa tu conexión');return}
   }
   S.del(uKey());S.del(bKey());S.del(KEY+'_last');BODY.key=null;BODY.data=null;DB=freshDB();started=false;
-  closeSheet('ovlAsk');closeSheet('ovlCfg');
+  closeSheet('ovlAsk');closeSheet('ovlCfg');closeSheet('ovlProf');
   if(CLOUD&&sb){await sb.auth.signOut();USER=null;showAuth('Cuenta eliminada. Tus datos se han borrado.',true)}
   else{toast('Datos borrados');startApp()}
 }
@@ -1437,6 +1568,7 @@ function openPriv(){
   document.getElementById('privBody').innerHTML=
    '<h4>Responsable</h4>'+esc(CFG.owner)+' · '+esc(CFG.ownerEmail)+
    '<h4>Qué datos se guardan</h4>Tu <b>email</b> y contraseña (para la cuenta) y tus <b>datos de entrenamiento</b>: rutina, series, pesos, repeticiones y esfuerzo percibido. '+
+   'También tu <b>perfil</b>, si lo rellenas: nombre, sexo, altura, objetivo y experiencia; sirven para recomendarte una rutina y calcular tu % de grasa. '+
    'Si activas el módulo de <b>dieta</b>, también lo que registres de comidas y suplementos.'+
    '<h4>Medidas corporales</h4>Son opcionales. Si las activas, se <b>cifran en tu dispositivo</b> con una clave que solo tú conoces antes de enviarse. '+
    'Ni el responsable ni el proveedor pueden leerlas. Si olvidas esa clave, no se pueden recuperar.'+
@@ -1712,7 +1844,7 @@ const MENUS=[
 ];
 
 /* ═════ DB ═════ */
-function freshDB(){return{v:2,_ts:0,plan:null,cex:{},sess:{},skips:{},supp:{},diet:{},bodyEnc:null,cfg:{
+function freshDB(){return{v:2,_ts:0,profile:{},plan:null,cex:{},sess:{},skips:{},supp:{},diet:{},bodyEnc:null,cfg:{
   start:'',k:2000,p:120,f:65,c:220,avail:[1,3,5],force:null,mods:{diet:false,body:false},supps:[]
 }}}
 function mergeDefaults(o){
@@ -1720,7 +1852,7 @@ function mergeDefaults(o){
   const r=Object.assign(d,o);
   r.cfg=Object.assign(freshDB().cfg,o.cfg||{});
   r.cfg.mods=Object.assign({diet:false,body:false},(o.cfg||{}).mods||{});
-  ['cex','sess','skips','supp','diet'].forEach(k=>{if(!r[k]||typeof r[k]!=='object')r[k]={}});
+  ['cex','sess','skips','supp','diet','profile'].forEach(k=>{if(!r[k]||typeof r[k]!=='object')r[k]={}});
   delete r.body;                                  // las medidas nunca viajan en claro
   return r;
 }
@@ -1774,6 +1906,7 @@ function go(v){
   if(v==='dieta')renderDiet();
   if(v==='progreso'){fillExSel();drawAll()}
   if(v==='guia'){
+    renderGoalCard();
     ['Rir','Rpe','Car'].forEach((k,i)=>{
       const el=document.getElementById('guia'+k);
       if(el)el.innerHTML=scaleHTML(['rir','rpe','car'][i],null);
@@ -1884,7 +2017,7 @@ function renderHoy(){
       :'El <b>Día '+P.noFit[0]+'</b> no cabe en los días que te quedan.')+
     ' Activa otro día en Ajustes o déjalo para la semana que viene.</div>';
   else if(skN>=2)av='<div class="warnbox">Llevas <b>'+skN+' sesiones saltadas</b> esta semana. Una no se nota; dos seguidas sí.</div>';
-  else if(P.pend.length>=3&&wdOf(T())>=4)av='<div class="warnbox">Quedan <b>'+P.pend.length+' sesiones</b> y pocos días. Prioriza '+prioDays().filter(d=>P.pend.includes(d)).slice(0,2).map(d=>'el Día '+d).join(' y ')+'.</div>';
+  else if(P.pend.length>=3&&wdOf(T())>=4&&!firstWeek)av='<div class="warnbox">Quedan <b>'+P.pend.length+' sesiones</b> y pocos días. Prioriza '+prioDays().filter(d=>P.pend.includes(d)).slice(0,2).map(d=>'el Día '+d).join(' y ')+'.</div>';
   let bav='';
   if(Bk){
     const b0=(Bk.b-1)*12,d0=weekStartDate(b0+11),d1=shiftD(d0,6);
@@ -1943,7 +2076,9 @@ async function saveBody(){
   const w=g('inW'),c=g('inC'),gr=g('inG');
   if(w==null&&c==null&&gr==null){toast('Añade al menos un valor');return}
   BODY.data=BODY.data||{};
-  const o={};if(w!=null)o.w=w;if(c!=null)o.c=c;if(gr!=null)o.g=gr;
+  const prev=(BODY.data||{})[T()]||{},o={};
+  if(prev.n!=null)o.n=prev.n;if(prev.hp!=null)o.hp=prev.hp;
+  if(w!=null)o.w=w;if(c!=null)o.c=c;if(gr!=null)o.g=gr;
   BODY.data[T()]=o;
   try{await encBody()}catch(e){toast('No se pudo cifrar');return}
   save();renderBodyCard();toast('Medidas guardadas y cifradas');
@@ -1983,7 +2118,8 @@ async function bodyEnable(){
   }catch(e){m.className='auth-msg';m.textContent='Tu navegador no permite el cifrado.';return}
   m.className='auth-msg';
   DB.cfg.mods.body=true;save();applyMods();
-  closeSheet('ovlBodyOn');openCfg();renderHoy();toast('Medidas activadas');
+  closeSheet('ovlBodyOn');renderHoy();toast('Medidas activadas');
+  if(ONB.after){ONB.after=false;afterOnb()}else openCfg();
 }
 function openUnlock(){
   if(!DB.bodyEnc||!DB.bodyEnc.salt){document.getElementById('ovlBodyOn').classList.add('on');return}
@@ -2854,12 +2990,6 @@ function drawAll(){drawCons();drawPR();drawVol();drawEx();if(DB.cfg.mods.body)dr
 /* ═════ CFG ═════ */
 function openCfg(){
   const c=DB.cfg;
-  const ago=SYNC.at?Math.max(0,Math.round((Date.now()-SYNC.at)/60000)):null;
-  const stt={ok:'Sincronizado'+(ago!=null?(ago<1?' ahora mismo':' hace '+ago+' min'):''),busy:'Sincronizando…',err:'Sin conexión: se guardará cuando vuelva'}[SYNC.state]||'—';
-  document.getElementById('cfgAcct').innerHTML=CLOUD&&USER
-    ?'<b>'+esc(USER.email)+'</b><br>'+stt+
-      '<button class="btn gh full sm" style="margin-top:9px" onclick="askLogout()">Cerrar sesión</button>'
-    :'<b>Modo local, sin cuenta.</b><br>Los datos solo se guardan en este navegador. Para activar las cuentas de alumnos, rellena la configuración de Supabase (ver GUIA.md).';
   document.getElementById('cfgStart').value=c.start||T();
   renderAvail();
   const m=c.mods||{};
@@ -3155,6 +3285,342 @@ function delCustom(){
   closeSheet('ovlCus');planChanged('Ejercicio eliminado de tu rutina');
 }
 
+/* ═════ PERFIL ═════ */
+const GOALS={
+ grasa:{n:'Perder grasa',s:'Bajar % de grasa manteniendo el músculo',tips:[
+  'Prioriza la fuerza: mantener tus pesos mientras comes algo menos es lo que protege el músculo.',
+  'La cintura y la tendencia de varias semanas dicen más que la báscula de un día.',
+  'Pierde como mucho un 0,5–1 % de tu peso por semana. Más rápido suele costar músculo.',
+  'Proteína alta (1,6–2,2 g por kg) y caminar a diario suman tanto como el cardio.']},
+ musculo:{n:'Ganar músculo',s:'Aumentar masa muscular',tips:[
+  'Busca sumar repeticiones o peso cada semana: es la señal de que estás creciendo.',
+  'Come un poco por encima de lo que gastas: unas 200–300 kcal más al día.',
+  'Proteína: 1,6–2,2 g por kg al día, repartida en 3–4 tomas.',
+  'Duerme 7–9 horas: el músculo se construye descansando.']},
+ fuerza:{n:'Ganar fuerza',s:'Mover más peso en los ejercicios básicos',tips:[
+  'Los básicos mandan: sentadilla, press banca, peso muerto y press militar.',
+  'Descansa 2,5–3 minutos en los pesados para rendir en cada serie.',
+  'Sube poco a poco: 2,5 kg en un básico es mucho a medio plazo.',
+  'Técnica antes que carga, y nunca al fallo en los básicos.']},
+ salud:{n:'Salud y forma',s:'Moverme, sentirme bien y mantenerme',tips:[
+  'La constancia gana: 2–3 sesiones por semana mantenidas durante meses.',
+  'Combina la fuerza con algo de cardio suave.',
+  'Si un día vas justo, haz una sesión corta antes que no hacer nada.',
+  'Escucha a tus articulaciones: el dolor no es esfuerzo.']},
+ deporte:{n:'Rendir en mi deporte',s:'Preparación física para artes marciales u otro deporte',tips:[
+  'El gimnasio complementa al tatami, no lo sustituye: no llegues agotado a clase.',
+  'Prioriza la fuerza de piernas, cadera y espalda, y la estabilidad del core.',
+  'Evita una sesión dura de pierna justo antes de una clase intensa.',
+  'Dos días de fuerza bien hechos suelen bastar como complemento.']}
+};
+const LEVELS={n0:{n:'Nunca he entrenado',s:'Empiezo de cero o casi'},n1:{n:'Menos de 1 año',s:'Conozco las máquinas y algún básico'},n2:{n:'Más de 1 año',s:'Entreno con regularidad'}};
+const SEXES={m:'Hombre',f:'Mujer',x:'Prefiero no decirlo'};
+let PF={};
+function profile(){return DB.profile||{}}
+function recommendTpl(p){
+  p=p||{};
+  if(p.lvl==='n0')return 'ini3';
+  if(p.goal==='deporte')return 'fb2';
+  if(p.goal==='salud')return p.lvl==='n2'?'fb3':'ini3';
+  if(p.lvl==='n2')return 'tp4';
+  return 'fb3';
+}
+function avatarHTML(){
+  const n=(profile().name||'').trim();
+  return n?esc(n[0].toUpperCase())
+    :'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>';
+}
+function renderAvatar(){
+  const b=document.getElementById('btnProfile');if(!b)return;
+  b.innerHTML=avatarHTML();b.classList.toggle('has-name',!!(profile().name||'').trim());
+}
+/* campos del perfil: se usan en el panel 👤 y en la configuración inicial */
+function profFields(boxId){
+  const box=document.getElementById(boxId);if(!box)return;
+  const opt=(group,key,o)=>'<button type="button" class="opt'+(PF[group]===key?' on':'')+'" onclick="PF.'+group+'=\''+key+'\';profFields(\''+boxId+'\')">'+
+    '<div class="t">'+o.n+'</div>'+(o.s?'<div class="s">'+o.s+'</div>':'')+'</button>';
+  box.innerHTML=
+    '<div class="fld"><label>NOMBRE · cómo quieres que te llame la app</label><input type="text" maxlength="30" autocomplete="given-name" value="'+esc(PF.name||'')+'" oninput="PF.name=this.value"></div>'+
+    '<div class="f2"><div class="fld"><label>SEXO</label><div class="seg seg-s">'+
+      Object.entries(SEXES).map(([k,v])=>'<button type="button" class="'+(PF.sex===k?'on':'')+'" onclick="PF.sex=\''+k+'\';profFields(\''+boxId+'\')">'+(k==='x'?'—':v)+'</button>').join('')+
+    '</div></div><div class="fld"><label>ALTURA (cm)</label><input type="number" inputmode="numeric" min="120" max="230" value="'+(PF.h||'')+'" oninput="PF.h=parseFloat(this.value)||null"></div></div>'+
+    '<div class="note" style="margin:-4px 0 12px">Sexo y altura solo se usan para calcular tu % de grasa. '+(PF.sex==='x'?'Has elegido no decirlo: la calculadora te preguntará qué fórmula usar.':'')+'</div>'+
+    '<div class="fld"><label>OBJETIVO PRINCIPAL</label><div class="opts">'+Object.entries(GOALS).map(([k,o])=>opt('goal',k,o)).join('')+'</div></div>'+
+    '<div class="fld"><label>EXPERIENCIA ENTRENANDO</label><div class="opts">'+Object.entries(LEVELS).map(([k,o])=>opt('lvl',k,o)).join('')+'</div></div>';
+}
+function openProfile(){
+  PF=Object.assign({},profile());
+  const p=profile();
+  document.getElementById('profAv').innerHTML=avatarHTML();
+  document.getElementById('profName').textContent=(p.name||'').trim()||'Tu perfil';
+  document.getElementById('profMail').textContent=USER?USER.email:'Modo local, sin cuenta';
+  profFields('profForm');
+  const ago=SYNC.at?Math.max(0,Math.round((Date.now()-SYNC.at)/60000)):null;
+  const stt={ok:'Sincronizado'+(ago!=null?(ago<1?' ahora mismo':' hace '+ago+' min'):''),busy:'Sincronizando…',err:'Sin conexión: se guardará cuando vuelva'}[SYNC.state]||'—';
+  document.getElementById('profAcct').innerHTML=CLOUD&&USER
+    ?stt+'<button class="btn gh full sm" style="margin-top:9px" onclick="askLogout()">Cerrar sesión</button>'
+    :'<b>Modo local, sin cuenta.</b><br>Los datos solo se guardan en este navegador.';
+  document.getElementById('ovlProf').classList.add('on');
+}
+function cleanPF(){
+  const o={};
+  o.name=clean(PF.name||'').slice(0,30);
+  if(SEXES[PF.sex])o.sex=PF.sex;
+  const h=parseFloat(PF.h);if(h>=120&&h<=230)o.h=Math.round(h);
+  if(GOALS[PF.goal])o.goal=PF.goal;
+  if(LEVELS[PF.lvl])o.lvl=PF.lvl;
+  return o;
+}
+function saveProfile(){
+  const h=parseFloat(PF.h);
+  if(PF.h&&!(h>=120&&h<=230)){toast('Revisa la altura (en cm)');return}
+  DB.profile=Object.assign({},profile(),cleanPF(),{done:1});
+  save();renderAvatar();closeSheet('ovlProf');go(cur);toast('Perfil guardado');
+}
+
+/* ═════ % DE GRASA · método de la Marina de EE. UU. (cinta métrica) ═════ */
+let BFS={sex:null};
+function bfNavy(sex,h,waist,neck,hip){
+  const L=Math.log10;
+  if(!(h>0&&waist>0&&neck>0))return null;
+  if(sex==='f'){if(!(hip>0)||waist+hip-neck<=0)return null;return 495/(1.29579-0.35004*L(waist+hip-neck)+0.22100*L(h))-450}
+  if(waist-neck<=0)return null;
+  return 495/(1.0324-0.19077*L(waist-neck)+0.15456*L(h))-450;
+}
+const BF_RANGES={m:[[2,'Grasa esencial'],[6,'Atlético'],[14,'En forma'],[18,'Medio'],[25,'Alto']],f:[[10,'Grasa esencial'],[14,'Atlético'],[21,'En forma'],[25,'Medio'],[32,'Alto']]};
+function bfRange(sex,v){let r='';(BF_RANGES[sex]||[]).forEach(([min,n])=>{if(v>=min)r=n});return r}
+function openBF(){
+  closeSheet('ovlProf');
+  const p=profile(),last=lastBody();
+  BFS.sex=(p.sex==='m'||p.sex==='f')?p.sex:(BFS.sex||null);
+  document.getElementById('bfH').value=p.h||'';
+  document.getElementById('bfW').value=last.c??'';
+  document.getElementById('bfN').value=last.n??'';
+  document.getElementById('bfHip').value=last.hp??'';
+  document.getElementById('bfRes').innerHTML='';
+  renderBFSex();
+  document.getElementById('ovlBF').classList.add('on');
+}
+function lastBody(){
+  const B=BODY.data||{},ks=Object.keys(B).sort().reverse(),o={};
+  ['c','n','hp'].forEach(f=>{for(const k of ks)if(B[k][f]!=null){o[f]=B[k][f];break}});
+  return o;
+}
+function renderBFSex(){
+  const p=profile(),known=p.sex==='m'||p.sex==='f';
+  document.getElementById('bfSexBox').innerHTML=known
+    ?'<div class="note" style="margin:0 0 10px">Fórmula para <b>'+SEXES[p.sex].toLowerCase()+'</b> (según tu perfil).</div>'
+    :'<div class="fld"><label>FÓRMULA</label><div class="seg seg-s">'+
+      [['m','Hombre'],['f','Mujer']].map(([k,v])=>'<button type="button" class="'+(BFS.sex===k?'on':'')+'" onclick="BFS.sex=\''+k+'\';renderBFSex()">'+v+'</button>').join('')+'</div></div>';
+  document.getElementById('bfHipF').style.display=BFS.sex==='f'?'':'none';
+  document.getElementById('bfWaistL').textContent=BFS.sex==='f'?'CINTURA (cm) · la parte más estrecha':'CINTURA (cm) · a la altura del ombligo';
+}
+function calcBF(){
+  const g=id=>{const v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v};
+  const h=g('bfH'),w=g('bfW'),n=g('bfN'),hp=g('bfHip'),res=document.getElementById('bfRes');
+  if(!BFS.sex){res.innerHTML='<div class="auth-msg">Elige la fórmula.</div>';return null}
+  if(!h||!w||!n||(BFS.sex==='f'&&!hp)){res.innerHTML='<div class="auth-msg">Completa todas las medidas.</div>';return null}
+  const v=bfNavy(BFS.sex,h,w,n,hp);
+  if(v==null||!isFinite(v)||v<2||v>60){res.innerHTML='<div class="auth-msg">Las medidas no cuadran. Revisa que estén en centímetros.</div>';return null}
+  const r=Math.round(v*10)/10;
+  const canSave=DB.cfg.mods.body;
+  res.innerHTML='<div class="bf-res"><b>'+r.toString().replace('.',',')+' %</b><span>'+bfRange(BFS.sex,r)+' · margen aprox. ±3–4 puntos</span></div>'+
+    (canSave?'<button class="btn acc full" onclick="saveBF()">Guardar en mis medidas de hoy</button>'
+      :'<div class="note" style="margin-top:8px">Para guardarlo y ver tu evolución, activa <b>Medidas</b> en Ajustes. Se guardan cifradas.</div>');
+  if(h&&profile().h!==Math.round(h)&&h>=120&&h<=230){DB.profile=Object.assign({},profile(),{h:Math.round(h)});save()}
+  return {v:r,w,n,hp};
+}
+async function saveBF(){
+  const r=calcBF();if(!r)return;
+  if(!BODY.key){openUnlock();return}
+  BODY.data=BODY.data||{};
+  const o=Object.assign({},BODY.data[T()]||{},{c:r.w,n:r.n,g:r.v});
+  if(BFS.sex==='f'&&r.hp)o.hp=r.hp;
+  BODY.data[T()]=o;
+  try{await encBody()}catch(e){toast('No se pudo cifrar');return}
+  save();closeSheet('ovlBF');renderHoy();toast('Guardado en tus medidas (cifrado)');
+}
+
+/* ═════ GUÍA · tarjeta de tu objetivo ═════ */
+function renderGoalCard(){
+  const el=document.getElementById('goalCard');if(!el)return;
+  const g=GOALS[profile().goal];
+  if(!g){el.innerHTML='<div class="card-t">Tu objetivo</div><div class="note" style="margin-top:0">Indica tu objetivo en tu perfil y aquí verás los consejos clave para conseguirlo.</div>'+
+    '<button class="btn gh full sm" style="margin-top:10px" onclick="openProfile()">Abrir mi perfil</button>';return}
+  el.innerHTML='<div class="card-t">Tu objetivo <span class="hint">'+g.n+'</span></div><ul class="klist">'+g.tips.map(t=>'<li>'+t+'</li>').join('')+'</ul>';
+}
+
+/* ═════ CONFIGURACIÓN INICIAL ═════ */
+let ONB={i:0,steps:[],tpl:null,av:null,diet:false,body:false,after:false};
+function openOnb(){
+  PF=Object.assign({},profile());
+  ONB={i:0,tpl:null,av:null,diet:!!DB.cfg.mods.diet,body:!!DB.cfg.mods.body,after:false,
+    steps:['welcome','profile'].concat(DB.plan?[]:['routine']).concat(['days','modules']).concat(isMobile()&&!isStandalone()?['install']:[]).concat(['ready'])};
+  document.getElementById('onb').classList.add('on');
+  renderOnb();
+}
+function onbGo(d){
+  const st=ONB.steps[ONB.i];
+  if(d>0){
+    if(st==='profile'){
+      if(!GOALS[PF.goal]){toast('Elige tu objetivo');return}
+      if(!LEVELS[PF.lvl]){toast('Elige tu experiencia');return}
+      const h=parseFloat(PF.h);if(PF.h&&!(h>=120&&h<=230)){toast('Revisa la altura (en cm)');return}
+      if(!ONB.tpl&&!DB.plan)ONB.tpl=recommendTpl(PF);
+    }
+    if(st==='routine'&&!ONB.tpl){toast('Elige una rutina');return}
+    if(st==='days'&&(!ONB.av||!ONB.av.length)){toast('Elige al menos un día');return}
+    if(st==='ready'){finishOnb();return}
+  }
+  ONB.i=Math.max(0,Math.min(ONB.steps.length-1,ONB.i+d));
+  renderOnb();document.getElementById('onb').scrollTop=0;
+}
+function onbAv(){
+  if(ONB.av)return ONB.av;
+  ONB.av=(ONB.tpl&&TPLS[ONB.tpl]?TPLS[ONB.tpl].av:(DB.cfg.avail||[1,3,5])).slice();
+  return ONB.av;
+}
+function renderOnb(){
+  const st=ONB.steps[ONB.i],n=ONB.steps.length,b=document.getElementById('onbBody');
+  document.getElementById('onbDots').innerHTML=ONB.steps.map((_,i)=>'<i class="'+(i<ONB.i?'on':(i===ONB.i?'now':''))+'"></i>').join('');
+  const name=clean(PF.name||'');
+  let h='';
+  if(st==='welcome')h='<div class="onb-logo"><img src="icons/icon-192.png" alt=""></div>'+
+    '<h2>'+(name?'Hola, '+esc(name):'Bienvenido a NEXA Fit')+'</h2>'+
+    '<p class="onb-p">Vamos a dejar la app lista para ti. Es un minuto.</p>'+
+    '<div class="onb-feat"><b>◉</b><div><div class="t">Sesiones guiadas</div><div class="s">Serie a serie, con el peso propuesto y el descanso cronometrado.</div></div></div>'+
+    '<div class="onb-feat"><b>◢</b><div><div class="t">Progreso real</div><div class="s">La app te dice cuándo subir peso y guarda tus récords.</div></div></div>'+
+    '<div class="onb-feat"><b>🔒</b><div><div class="t">Tus datos son tuyos</div><div class="s">Solo tú los ves. Las medidas corporales se cifran en tu móvil.</div></div></div>';
+  if(st==='profile')h='<h2>Sobre ti</h2><p class="onb-p">Con esto te recomendamos una rutina y adaptamos los consejos.</p><div id="onbForm"></div>';
+  if(st==='routine'){
+    const rec=recommendTpl(PF);
+    h='<h2>Tu rutina</h2><p class="onb-p">Te marcamos la que mejor encaja con lo que nos has contado. Podrás cambiarla o editarla cuando quieras.</p>'+
+      Object.entries(TPLS).sort(([a],[b2])=>(b2===rec)-(a===rec)).map(([k,t])=>
+        '<button class="tpl'+(ONB.tpl===k?' cur':'')+'" onclick="ONB.tpl=\''+k+'\';ONB.av=null;renderOnb()">'+
+        '<div class="tpl-t">'+t.n+'<small>'+t.tag+'</small></div>'+
+        (k===rec?'<div class="rec">Recomendada para ti</div>':'')+
+        '<div class="tpl-s"><b style="color:var(--text)">'+t.lvl+'.</b> '+t.h+'</div></button>').join('')+
+      '<button class="tpl own'+(ONB.tpl==='custom'?' cur':'')+'" onclick="ONB.tpl=\'custom\';ONB.av=null;renderOnb()"><div class="tpl-t">Crear la mía</div><div class="tpl-s">Eliges tú los días y los ejercicios.</div></button>';
+  }
+  if(st==='days'){
+    const av=onbAv(),t=TPLS[ONB.tpl]||(DB.plan&&TPLS[DB.plan.src]),nd=t?t.d.length:(DB.plan?DB.plan.days.length:3);
+    h='<h2>¿Qué días puedes entrenar?</h2><p class="onb-p">Tu rutina tiene <b>'+nd+' sesiones</b> por semana. La app las coloca en estos días y, si te saltas una, la mueve sola.</p>'+
+      '<div class="daysel onb-days">'+[1,2,3,4,5,6,0].map(w=>'<button class="'+(av.includes(w)?'on':'')+'" onclick="onbDay('+w+')">'+WDL[w]+'</button>').join('')+'</div>'+
+      '<div class="note" style="text-align:center">'+av.length+' día'+(av.length===1?'':'s')+' elegido'+(av.length===1?'':'s')+
+      (av.length<nd?' · <span style="color:var(--accent3)">menos que sesiones: alguna se quedará fuera cada semana</span>':'')+'</div>';
+  }
+  if(st==='modules'){
+    const ck=(on,fn,t,s)=>'<div class="chk'+(on?' on':'')+'" onclick="'+fn+'"><div class="chk-box">'+(on?'✓':'')+'</div><div class="chk-n"><div class="t">'+t+'</div><div class="s">'+s+'</div></div></div>';
+    h='<h2>Extras opcionales</h2><p class="onb-p">Actívalos solo si te interesan. Puedes cambiarlo luego en Ajustes.</p>'+
+      ck(ONB.diet,'ONB.diet=!ONB.diet;renderOnb()','Dieta','Objetivos de calorías y proteína, registro de comidas y suplementos.')+
+      ck(ONB.body,'ONB.body=!ONB.body;renderOnb()','Medidas corporales · cifradas','Peso, cintura y % de grasa, con calculadora incluida. Se cifran con una clave que solo tú conoces.')+
+      (ONB.body&&!DB.cfg.mods.body?'<div class="note">Al terminar elegirás tu <b>clave de medidas</b>.</div>':'');
+  }
+  if(st==='install')h='<div class="onb-logo"><img src="icons/icon-192.png" alt=""></div><h2>Instálala en tu móvil</h2>'+
+    '<p class="onb-p">Se abre a pantalla completa como cualquier app y funciona aunque no tengas cobertura en el gimnasio.</p>'+
+    (installEvt?'<button class="btn acc full" onclick="doInstall()">Instalar NEXA Fit</button>':'<div class="inst-steps" style="font-size:13px">'+installSteps()+'</div>')+
+    '<div class="note" style="text-align:center">Si prefieres hacerlo después, lo tienes en Ajustes.</div>';
+  if(st==='ready'){
+    const g=GOALS[PF.goal],t=ONB.tpl==='custom'?'Creada por ti':(TPLS[ONB.tpl]||TPLS[DB.plan&&DB.plan.src]||{}).n;
+    h='<div class="onb-logo"><img src="icons/icon-192.png" alt=""></div><h2>¡Listo'+(name?', '+esc(name):'')+'!</h2>'+
+      '<div class="glist">'+
+      (g?'<div><span>Objetivo</span><span>'+g.n+'</span></div>':'')+
+      (t?'<div><span>Rutina</span><span>'+t+'</span></div>':'')+
+      '<div><span>Días</span><span>'+onbAv().slice().sort((a,b2)=>((a+6)%7)-((b2+6)%7)).map(w=>WDL[w]).join(' ')+'</span></div>'+
+      '<div><span>Extras</span><span>'+([ONB.diet?'Dieta':'',ONB.body?'Medidas':''].filter(Boolean).join(' · ')||'Ninguno')+'</span></div></div>'+
+      '<p class="onb-p">Ahora te enseñamos la app en 30 segundos.</p>';
+  }
+  b.innerHTML=h;
+  if(st==='profile')profFields('onbForm');
+  document.getElementById('onbBack').style.visibility=ONB.i?'visible':'hidden';
+  document.getElementById('onbNext').textContent=st==='ready'?'Empezar':(st==='welcome'?'Vamos':'Siguiente');
+}
+function onbDay(w){const a=onbAv(),i=a.indexOf(w);if(i>=0)a.splice(i,1);else a.push(w);renderOnb()}
+function finishOnb(){
+  DB.profile=Object.assign({},profile(),cleanPF(),{done:1});
+  if(ONB.tpl){
+    DB.plan=ONB.tpl==='custom'?{src:'custom',prio:[],days:[{n:'Día 1',ex:[]}]}:planFromTpl(ONB.tpl);
+    DB.cfg.start=T();DB.cfg.force=null;
+  }
+  DB.cfg.avail=onbAv().slice().sort();
+  DB.cfg.mods.diet=ONB.diet;
+  save();buildPlan();applyMods();renderAvatar();setStoreNote();
+  document.getElementById('onb').classList.remove('on');
+  curDay=todayDay()||dayKeys()[0]||1;go('hoy');
+  if(ONB.body&&!DB.cfg.mods.body){
+    ONB.after=true;
+    ['boP1','boP2'].forEach(i=>document.getElementById(i).value='');
+    document.getElementById('boAck').checked=false;document.getElementById('boMsg').textContent='';
+    document.getElementById('ovlBodyOn').classList.add('on');
+    return;
+  }
+  afterOnb();
+}
+function afterOnb(){
+  if(DB.plan&&DB.plan.src==='custom'&&!DB.plan.days.some(d=>d.ex.length)){
+    go('rutina');openCat(0);toast('Añade los ejercicios de tu día 1');return;
+  }
+  startTour();
+}
+function bodyOnCancel(){closeSheet('ovlBodyOn');if(ONB.after){ONB.after=false;afterOnb()}}
+
+/* ═════ TUTORIAL (señala cada parte de la app) ═════ */
+const TOUR=[
+ {sel:'#testBar .daysel',t:'Qué toca hoy',b:'La app te propone el día de tu rutina según tus días de entreno. Si hoy prefieres otro, lo cambias aquí.'},
+ {sel:'#hoyPlan .btn.acc',alt:'#hoyPlan',t:'Sesión guiada',b:'Te lleva serie a serie: te propone el peso, cronometra el descanso y te avisa cuando toca subir.',
+  bAlt:'Hoy toca descanso. Los días de entreno aparecerá aquí el botón <b>Empezar sesión</b>: te lleva serie a serie, te propone el peso y cronometra el descanso.'},
+ {sel:'#wkStrip',t:'Tu semana',b:'En verde lo hecho y en naranja lo previsto. Si un día no puedes, la app lo recoloca.'},
+ {sel:'.bnav [data-v=entreno]',t:'Entreno',b:'La tabla completa de la sesión, para anotar o corregir series a mano.'},
+ {sel:'.bnav [data-v=dieta]',t:'Dieta',b:'Tus calorías, proteína y suplementos del día.',when:()=>DB.cfg.mods.diet},
+ {sel:'.bnav [data-v=rutina]',t:'Rutina',b:'Cambia de plantilla o edita ejercicios, series, repeticiones y descansos.',when:()=>!DB.cfg.mods.diet},
+ {sel:'.bnav [data-v=progreso]',t:'Progreso',b:'Tu constancia semanal, tus récords y la evolución de cada ejercicio.'},
+ {sel:'.bnav [data-v=guia]',t:'Guía',b:'Cómo progresar, cuánto descansar y cuánto apretar. Y los consejos para tu objetivo.'},
+ {sel:'#btnProfile',t:'Tu perfil',b:'Tus datos, tu objetivo, la calculadora de % de grasa y tu cuenta.'},
+ {sel:'.cfg-btn',t:'Ajustes',b:'Tus días de entreno, la rutina, los extras de dieta y medidas, e instalar la app.'}
+];
+let TI=-1,TSTEPS=[];
+function startTour(){
+  ['ovlProf','ovlCfg','ovlTpl'].forEach(closeSheet);
+  if(cur!=='hoy')go('hoy');
+  TSTEPS=TOUR.filter(s=>!s.when||s.when());TI=-1;
+  document.getElementById('tour').classList.add('on');
+  tourNext();
+}
+function tourEl(s){
+  s._alt=false;
+  for(const q of [s.sel,s.alt].filter(Boolean)){
+    const e=document.querySelector(q);
+    if(e&&e.getBoundingClientRect().width>0){s._alt=(q===s.alt);return e}
+  }
+  return null;
+}
+function tourNext(){
+  TI++;
+  while(TI<TSTEPS.length&&!tourEl(TSTEPS[TI]))TI++;
+  if(TI>=TSTEPS.length){endTour();return}
+  const el=tourEl(TSTEPS[TI]);
+  if(getComputedStyle(el).position!=='fixed'&&!el.closest('.bnav,.topbar'))el.scrollIntoView({block:'center',behavior:'instant'});
+  setTimeout(tourPlace,60);
+}
+function tourPlace(){
+  const s=TSTEPS[TI];if(!s)return;
+  const el=tourEl(s);if(!el){tourNext();return}
+  const r=el.getBoundingClientRect(),pad=6,hole=document.getElementById('tourHole'),tip=document.getElementById('tourTip');
+  Object.assign(hole.style,{left:(r.left-pad)+'px',top:(r.top-pad)+'px',width:(r.width+pad*2)+'px',height:(r.height+pad*2)+'px'});
+  tip.innerHTML='<div class="tour-n">'+(TI+1)+' / '+TSTEPS.length+'</div><div class="tour-t">'+s.t+'</div><div class="tour-b">'+(s._alt&&s.bAlt?s.bAlt:s.b)+'</div>'+
+    '<div class="brow" style="margin-top:12px"><button class="btn gh sm" onclick="endTour()">Saltar</button>'+
+    '<button class="btn acc sm" onclick="tourNext()">'+(TI===TSTEPS.length-1?'Terminar':'Siguiente')+'</button></div>';
+  const vh=window.innerHeight,below=r.top+r.height/2<vh/2;
+  tip.style.top=below?(r.bottom+pad+12)+'px':'auto';
+  tip.style.bottom=below?'auto':(vh-r.top+pad+12)+'px';
+}
+function endTour(){
+  document.getElementById('tour').classList.remove('on');TI=-1;
+  if(!DB.cfg.tour){DB.cfg.tour=1;save()}
+  window.scrollTo(0,0);
+}
+window.addEventListener('resize',()=>{if(TI>=0)tourPlace()});
+
 /* ═════ APP INSTALABLE (PWA) ═════ */
 let installEvt=null;
 const isStandalone=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
@@ -3209,8 +3675,10 @@ async function startApp(){
     if(!DB._ts)document.getElementById('hoyPlan').innerHTML='<div class="empty">Sincronizando…</div>';
     await pull();
   }
-  setStoreNote();
-  if(!DB.plan)openTplPicker(true);else go(cur);
+  setStoreNote();renderAvatar();
+  if(!(DB.profile&&DB.profile.done))openOnb();
+  else if(!DB.plan)openTplPicker(true);
+  else go(cur);
 }
 function boot(){
   applyTheme();

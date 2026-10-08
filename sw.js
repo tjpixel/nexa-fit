@@ -4,7 +4,7 @@
    - Imágenes e iconos: primero la copia guardada.
    - Librería de cuentas y tipografías: copia guardada y se refresca por detrás.
    - Los datos (Supabase) NUNCA pasan por aquí: siempre van directos a la red. */
-const VER='nexa-fit-v2';
+const VER='nexa-fit-v3';
 const LIB='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js';
 const SHELL=['./','./index.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./icons/apple-touch-icon.png'];
 const CDN=['cdn.jsdelivr.net','fonts.googleapis.com','fonts.gstatic.com'];
