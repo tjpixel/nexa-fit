@@ -1019,7 +1019,7 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
   <div class="card">
     <div class="card-t warn" style="color:var(--accent3)">Seguridad</div>
     <div class="note warn" style="margin-top:0">
-      Si tienes una <b>lesión, dolor o una condición médica</b>, consulta antes con un profesional sanitario y comenta con tu instructor qué adaptar. La plantilla <b>Iniciación en máquinas</b> es la más suave para muñecas y espalda.<br><br>
+      Si tienes una <b>lesión, dolor o una condición médica</b>, consulta antes con un profesional sanitario y comenta con tu entrenador qué adaptar, si tienes uno. La plantilla <b>Iniciación en máquinas</b> es la más suave para muñecas y espalda.<br><br>
       <b>Regla general:</b> el dolor articular no es esfuerzo. Si una serie molesta en una articulación, para, baja la carga o cambia el ejercicio en Rutina.
     </div>
   </div>
@@ -1278,10 +1278,10 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 <!-- ══ ACTIVAR MEDIDAS ══ -->
 <div class="ovl" id="ovlBodyOn" onclick="if(event.target===this)closeSheet('ovlBodyOn')"><div class="sheet">
   <h3>Activar medidas cifradas</h3>
-  <div class="note" style="margin:-4px 0 12px">Elige una <b>clave de medidas</b>. Tus medidas se cifran en este dispositivo con ella antes de enviarse: ni el servidor ni tu instructor pueden leerlas.</div>
+  <div class="note" style="margin:-4px 0 12px">Elige una <b>clave de medidas</b>. Tus medidas se cifran en este dispositivo con ella antes de enviarse: nadie más puede leerlas, ni siquiera quien administra la app.</div>
   <div class="fld"><label>CLAVE DE MEDIDAS (mín. 8 caracteres)</label><input type="password" id="boP1" autocomplete="new-password"></div>
   <div class="fld"><label>REPÍTELA</label><input type="password" id="boP2" autocomplete="new-password"></div>
-  <label class="tick"><input type="checkbox" id="boAck"><span><b>Si olvido esta clave, pierdo mis medidas.</b> Nadie puede recuperarlas, tampoco mi instructor.</span></label>
+  <label class="tick"><input type="checkbox" id="boAck"><span><b>Si olvido esta clave, pierdo mis medidas.</b> Nadie puede recuperarlas por mí.</span></label>
   <label class="tick"><input type="checkbox" id="boRem" checked><span>Recordarla en este dispositivo</span></label>
   <div class="auth-msg" id="boMsg"></div>
   <div class="brow"><button class="btn gh" onclick="bodyOnCancel()">Cancelar</button><button class="btn acc" onclick="bodyEnable()">Activar</button></div>
@@ -1544,7 +1544,7 @@ async function authGo(){
       if(error)authMsg(/confirm/i.test(error.message)?'Confirma tu email: revisa tu correo (y la carpeta de spam).':'Email o contraseña incorrectos.');
     }else if(AUTHM==='up'){
       const {data,error}=await sb.auth.signUp({email:e,password:p,options:{emailRedirectTo:redirect,data:{consent_at:new Date().toISOString()}}});
-      if(error)authMsg(/signups? not allowed|disabled/i.test(error.message)?'El registro está cerrado. Pide a tu instructor que te invite.':
+      if(error)authMsg(/signups? not allowed|disabled/i.test(error.message)?'El registro está cerrado. Pide una invitación a quien gestiona la app.':
         (/password/i.test(error.message)?'Contraseña demasiado débil. Prueba con una más larga.':'No se pudo crear la cuenta: '+error.message));
       else if(!data.session){authMode('in');authMsg('Te hemos enviado un email de confirmación. Ábrelo y después entra aquí con tu contraseña.',true)}
     }else if(AUTHM==='reset'){
