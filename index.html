@@ -672,6 +672,8 @@ body.light .prof-btn.has-name{color:#fff}
 .onb-days button{padding:12px 4px;font-size:13px}
 .onb-nav{display:flex;gap:10px;margin-top:22px;position:sticky;bottom:0;padding:10px 0 4px;background:var(--bg)}
 .onb-nav .btn{flex:1;padding:13px}
+.rec.also-rec,body.light .rec.also-rec{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent)}
+.rec.warn-rec,body.light .rec.warn-rec{background:none;color:var(--accent3);border:1px solid var(--accent3)}
 .rec{display:inline-block;margin-top:6px;font-size:10px;font-family:'DM Mono';letter-spacing:.5px;text-transform:uppercase;color:#0d0d0f;background:var(--accent);padding:3px 8px;border-radius:20px}
 body.light .rec{color:#fff}
 .tour{position:fixed;inset:0;z-index:270;display:none}
@@ -1682,6 +1684,12 @@ const EXC={
  deadbug:{n:'Dead bug',g:'Core',s:3,lo:8,hi:12,r:60,inc:0,bw:1,side:1,prog:'Hazlo más lento o con brazos y piernas más extendidos.',k:['Lumbar pegada al suelo todo el rato','Brazo y pierna contrarios a la vez','Exhala al extender','Si la lumbar se despega, acorta el recorrido']},
  // ── CARDIO
  cardio:{n:'Cardio continuo',g:'Cardio',s:1,lo:20,hi:20,r:0,inc:0,seg:1,min:1,spd:1,tip:'Progresa en velocidad, no en minutos',k:['Ritmo constante y sostenible','Postura erguida y core activo','No te apoyes en las barras','Si no puedes hablar, baja la intensidad']},
+ // ── ATLÉTICOS (fuerza útil para cualquier deporte)
+ stepup:{n:'Subida al banco (step-up)',g:'Pierna',s:3,lo:8,hi:12,r:90,inc:2,side:1,k:['Banco a la altura de la rodilla o algo menos','Todo el pie apoyado arriba','Sube empujando con la pierna de arriba, no impulsándote con la de abajo','Rodilla en línea con el pie','Baja lento y controlado']},
+ salto:{n:'Salto al cajón',g:'Pierna',s:3,lo:4,hi:6,r:90,inc:0,bw:1,prog:'Sube la altura del cajón poco a poco, sin perder un aterrizaje suave.',tip:'Calidad, no cansancio: para antes de que el salto pierda altura',k:['Cajón bajo para empezar','Brazos atrás y salta extendiendo cadera y rodillas','Aterriza suave, con las rodillas en línea con los pies','Baja del cajón andando, no saltando','Descansa lo necesario: cada salto debe ser explosivo']},
+ swing:{n:'Swing con kettlebell',g:'Glúteo',s:3,lo:12,hi:15,r:90,inc:4,tip:'Es un movimiento de cadera, no una sentadilla',k:['Pies algo más anchos que la cadera','Bisagra de cadera: la kettlebell pasa entre las piernas','Golpe de cadera y glúteos para proyectarla','Los brazos solo guían, no levantan','Arriba, cuerpo recto y abdomen firme','Espalda neutra en todo momento']},
+ pallof:{n:'Press Pallof',g:'Core',s:3,lo:10,hi:12,r:60,inc:2.5,side:1,tip:'Core que resiste el giro: el tronco no debe rotar',k:['Polea a la altura del pecho, de lado a ella','Pies a la anchura de caderas, rodillas algo flexionadas','Agarre con las dos manos pegado al pecho','Extiende los brazos al frente sin dejar que el tronco gire','Aguanta 2 segundos y vuelve']},
+ colgado:{n:'Colgarse de la barra',g:'Espalda',s:3,lo:20,hi:40,r:75,inc:0,seg:1,bw:1,prog:'Cuélgate de una mano o añade peso con un cinturón.',tip:'Agarre, hombros y espalda: muy útil para casi cualquier deporte',k:['Agarre completo, pulgar alrededor de la barra','Hombros activos: no te quedes colgado de las articulaciones','Cuerpo quieto, sin balanceo','Si molesta el hombro, apoya los pies y descarga peso']},
  cardiof:{n:'Cardio final',g:'Cardio',s:1,lo:10,hi:10,r:0,inc:0,seg:1,min:1,spd:1,tip:'Suave, para cerrar la sesión',k:['Ritmo cómodo','Puedes hablar con frases completas','Postura erguida']}
 };
 // imágenes disponibles en img/ (las que no existan se ocultan solas)
@@ -1692,29 +1700,76 @@ const IMG={plancha:'img/plancha.webp',femoral:'img/femoral.webp',elevp:'img/elev
 const TPLS={
  ini3:{n:'Iniciación en máquinas',tag:'3 días · cuerpo completo',lvl:'Principiante',
   h:'Todo en máquinas guiadas: fácil de aprender y suave para muñecas y espalda. Buena opción si nunca has entrenado o vuelves de una pausa.',
-  av:[1,3,5],prio:[1,2,3],d:[
+  goals:['salud','grasa','musculo'],lv:['n0','n1'],av:[1,3,5],prio:[1,2,3],d:[
    ['Cuerpo completo A',['prensa','pressp','jalon','femoral','plancha']],
    ['Cuerpo completo B',['hack','remo','pressh','abduc','crunchpol']],
    ['Cuerpo completo C',['prensa','pressp','remopolea','extcuad','plancL','cardiof']]]},
  fb3:{n:'Cuerpo completo',tag:'3 días · peso libre',lvl:'Principiante-intermedio',
   h:'Los básicos con barra y mancuernas tres veces por semana. Mucha frecuencia por grupo muscular y sesiones de unos 60 min.',
-  av:[1,3,5],prio:[1,2,3],d:[
+  goals:['fuerza','musculo','salud'],lv:['n1','n2'],av:[1,3,5],prio:[1,2,3],d:[
    ['Fuerza A',['sentadilla','banca','remobarra','femoral','plancha']],
    ['Fuerza B',['rumano','militar','jalon','zancada','elevp']],
    ['Fuerza C',['goblet','pressmanc','remomanc','hipth','laterales','deadbug']]]},
- tp4:{n:'Torso / Pierna',tag:'4 días',lvl:'Intermedio',
-  h:'Alterna días de tren superior e inferior. Más volumen por sesión y más días de descanso para cada grupo.',
-  av:[1,2,4,5],prio:[1,2,3,4],d:[
+ tpm4:{n:'Torso / Pierna en máquinas',tag:'4 días',lvl:'Cualquier nivel',
+  h:'Cuatro días alternando tren superior e inferior, casi todo en máquinas. Volumen suficiente para ganar músculo, fácil de aprender y amable con las articulaciones.',
+  goals:['musculo','salud','grasa'],lv:['n0','n1','n2'],av:[1,2,4,5],prio:[1,2,3,4],d:[
+   ['Pierna A',['prensa','femoral','extcuad','abduc','gemelo']],
+   ['Torso A',['pressp','jalon','pressh','remo','curl','triceps']],
+   ['Pierna B',['hack','hipth','femoral','kickb','plancL']],
+   ['Torso B',['aperturas','remopolea','laterales','facepull','crunchpol']]]},
+ tp4:{n:'Torso / Pierna',tag:'4 días · peso libre',lvl:'Intermedio',
+  h:'Alterna días de tren superior e inferior con los básicos de barra. Más volumen por sesión y más descanso para cada grupo.',
+  goals:['fuerza','musculo'],lv:['n2'],av:[1,2,4,5],prio:[1,2,3,4],d:[
    ['Pierna A',['sentadilla','rumano','prensa','femoral','gemelo']],
    ['Torso A',['banca','remobarra','militar','jalon','curl','triceps']],
    ['Pierna B',['hipth','bulgara','extcuad','femoral','plancL']],
    ['Torso B',['pressmanc','dominadas','pressp','remopolea','laterales','facepull']]]},
+ glu4:{n:'Glúteo y pierna',tag:'4 días',lvl:'Principiante-intermedio',
+  h:'Prioriza glúteo y pierna sin olvidar el torso: dos días de tren inferior, uno de torso y core, y uno de cuerpo completo. Hip thrust dos veces por semana.',
+  goals:['musculo','grasa'],lv:['n1','n2'],av:[1,2,4,5],prio:[1,2,4,3],d:[
+   ['Pierna y glúteo',['hipth','prensa','bulgara','femoral','abduc']],
+   ['Torso y core',['pressp','remo','jalon','laterales','crunchpol','plancha']],
+   ['Glúteo y cardio',['puente','kickb','rumano','plancL','cardio']],
+   ['Cuerpo completo',['hipth','goblet','remopolea','pressmanc','cardiof']]]},
+ grasa4:{n:'Pérdida de grasa',tag:'4 días · fuerza + cardio',lvl:'Cualquier nivel',
+  h:'Tres días de fuerza de cuerpo completo para conservar el músculo mientras pierdes grasa, y un día de cardio y core. Sesiones ágiles con un final de cardio suave.',
+  goals:['grasa','salud'],lv:['n0','n1','n2'],av:[1,2,4,5],prio:[1,2,4,3],d:[
+   ['Fuerza A',['goblet','pressp','remo','hipth','cardiof']],
+   ['Fuerza B',['prensa','jalon','pressh','kickb','cardiof']],
+   ['Cardio y core',[{id:'cardio',lo:30,hi:30},'plancha','pallof','deadbug','plancL']],
+   ['Fuerza C',['hack','pressmanc','remopolea','femoral','laterales','cardiof']]]},
+ atl3:{n:'Atlético',tag:'3 días · para tu deporte',lvl:'Principiante-intermedio',
+  h:'Fuerza útil para cualquier deporte (pádel, fútbol, carrera, artes marciales…): potencia, trabajo a una pierna, cadera, core que resiste giros y agarre. Si ya entrenas tu deporte varios días, haz solo las dos primeras sesiones.',
+  goals:['deporte','fuerza','salud'],lv:['n1','n2'],av:[1,3,5],prio:[1,2,3],d:[
+   ['Potencia y fuerza',['salto','sentadilla','remomanc','pallof','colgado']],
+   ['Cadera y una pierna',['swing','bulgara','pressmanc','dominadas','plancL']],
+   ['Estabilidad',['stepup','rumano','militar','remopolea','deadbug']]]},
  fb2:{n:'Mínimo eficaz',tag:'2 días · cuerpo completo',lvl:'Cualquier nivel',
   h:'Para semanas con poco tiempo o como complemento de otro deporte. Dos sesiones bien hechas mantienen y mejoran la fuerza.',
-  av:[2,5],prio:[1,2],d:[
-   ['Sesión A',['sentadilla','banca','remo','femoral','plancha']],
+  goals:['salud','deporte','fuerza'],lv:['n0','n1','n2'],av:[2,5],prio:[1,2],d:[
+   ['Sesión A',['goblet','pressmanc','remo','femoral','plancha']],
    ['Sesión B',['rumano','pressh','jalon','zancada','crunchpol']]]}
 };
+/* recomienda según objetivo, experiencia y días disponibles */
+function tplScore(k,p,nd){
+  const t=TPLS[k],td=t.d.length;let sc=0;
+  sc-=3*Math.abs(td-nd);if(td>nd)sc-=2;            // que quepa en los días que tienes
+  const gi=(t.goals||[]).indexOf(p.goal);if(gi>=0)sc+=5-gi;   // el objetivo principal de la plantilla pesa más
+  if(p.lvl&&t.lv)sc+=t.lv.includes(p.lvl)?3:-5;
+  return sc;
+}
+function rankTpls(p,nd,withScore){
+  p=p||{};nd=nd||((DB.cfg&&DB.cfg.avail)||[1,3,5]).length;
+  const r=Object.keys(TPLS).map((k,i)=>({k,sc:tplScore(k,p,nd),i})).sort((a,b)=>b.sc-a.sc||a.i-b.i);
+  return withScore?r:r.map(x=>x.k);
+}
+/* recomendada + "también encaja" si la segunda queda a 1 punto o menos */
+function tplBadges(p,nd){
+  const r=rankTpls(p,nd,true),o={};
+  if(!p||!p.goal)return o;
+  o[r[0].k]='rec';if(r[1]&&r[0].sc-r[1].sc<=1)o[r[1].k]='also';
+  return o;
+}
 const TYPES={
  peso:{n:'Con carga (kg)',d:{s:3,lo:8,hi:12,r:120,inc:2.5}},
  corporal:{n:'Peso corporal (reps)',d:{s:3,lo:8,hi:15,r:90,inc:0,bw:1}},
@@ -1733,7 +1788,7 @@ function exResolve(ref){
 function exName(id){const b=exBase(id);return b?b.n:id}
 function planFromTpl(key){
   const t=TPLS[key];
-  return{src:key,prio:t.prio.slice(),days:t.d.map(([n,ids])=>({n,ex:ids.map(id=>({id}))}))};
+  return{src:key,prio:t.prio.slice(),days:t.d.map(([n,ids])=>({n,ex:ids.map(x=>typeof x==='string'?{id:x}:Object.assign({},x))}))};
 }
 let PLAN={};
 function buildPlan(){
@@ -3227,20 +3282,34 @@ async function doImport(){
 }
 
 /* ═════ PLANTILLAS · ELEGIR ═════ */
+/* tarjeta de plantilla compartida por la configuración inicial y el selector */
+function tplCard(k,o){
+  const t=TPLS[k],td=t.d.length;
+  return '<button class="tpl'+(o.cur?' cur':'')+'" onclick="'+o.click+'">'+
+    '<div class="tpl-t">'+t.n+'<small>'+t.tag+'</small></div>'+
+    (o.rec==='rec'?'<div class="rec">Recomendada para ti</div>':o.rec==='also'?'<div class="rec also-rec">También encaja contigo</div>':(o.nd&&td>o.nd?'<div class="rec warn-rec">Más días de los que tienes</div>':''))+
+    '<div class="tpl-s"><b style="color:var(--text)">'+t.lvl+'.</b> '+t.h+'</div>'+
+    (o.detail?'<div class="tpl-d">'+t.d.map(([n,ids],i)=>'D'+(i+1)+' · '+n+' ('+ids.length+')').join('<br>')+'</div>':'')+
+    '</button>';
+}
+let TPLF=0;
 function openTplPicker(first){
   const curSrc=DB.plan?.src;
   document.getElementById('tplTitle').textContent=first?'Elige tu rutina':'Cambiar de plantilla';
   document.getElementById('tplHint').innerHTML=first
     ?'Empieza con una plantilla o crea la tuya. Puedes cambiarla o editarla cuando quieras.'
     :'Tu historial de entrenos se conserva al cambiar. Lo que hayas modificado en la rutina actual se sustituye.';
-  document.getElementById('tplList').innerHTML=Object.entries(TPLS).map(([k,t])=>
-    '<button class="tpl'+(k===curSrc?' cur':'')+'" onclick="pickTpl(\''+k+'\')">'+
-      '<div class="tpl-t">'+t.n+'<small>'+t.tag+'</small></div>'+
-      '<div class="tpl-s"><b style="color:var(--text)">'+t.lvl+'.</b> '+t.h+'</div>'+
-      '<div class="tpl-d">'+t.d.map(([n,ids],i)=>'D'+(i+1)+' · '+n+' ('+ids.length+')').join('<br>')+'</div>'+
-    '</button>').join('');
+  renderTplList();
   document.getElementById('tplCancel').style.display=DB.plan?'':'none';
   document.getElementById('ovlTpl').classList.add('on');
+}
+function renderTplList(){
+  const curSrc=DB.plan?.src,nd=(DB.cfg.avail||[]).length,order=rankTpls(profile(),nd),bd=tplBadges(profile(),nd);
+  const counts=[...new Set(Object.values(TPLS).map(t=>t.d.length))].sort();
+  document.getElementById('tplList').innerHTML=
+    '<div class="seg">'+['Todas'].concat(counts.map(c=>c+' días')).map((l,i)=>{const v=i?counts[i-1]:0;
+      return '<button class="'+(TPLF===v?'on':'')+'" onclick="TPLF='+v+';renderTplList()">'+l+'</button>'}).join('')+'</div>'+
+    order.filter(k=>!TPLF||TPLS[k].d.length===TPLF).map(k=>tplCard(k,{cur:k===curSrc,rec:bd[k],nd,detail:1,click:"pickTpl('"+k+"')"})).join('');
 }
 function pickTpl(k){
   if(!DB.plan)return applyTpl(k);
@@ -3447,24 +3516,17 @@ const GOALS={
   'Combina la fuerza con algo de cardio suave.',
   'Si un día vas justo, haz una sesión corta antes que no hacer nada.',
   'Escucha a tus articulaciones: el dolor no es esfuerzo.']},
- deporte:{n:'Rendir en mi deporte',s:'Preparación física para artes marciales u otro deporte',tips:[
-  'El gimnasio complementa al tatami, no lo sustituye: no llegues agotado a clase.',
-  'Prioriza la fuerza de piernas, cadera y espalda, y la estabilidad del core.',
-  'Evita una sesión dura de pierna justo antes de una clase intensa.',
-  'Dos días de fuerza bien hechos suelen bastar como complemento.']}
+ deporte:{n:'Rendir en mi deporte',s:'Preparación física para tu deporte: pádel, fútbol, carrera, artes marciales…',tips:[
+  'El gimnasio complementa a tu deporte, no lo sustituye: no llegues agotado a tus entrenos o partidos.',
+  'Prioriza la fuerza de piernas, cadera y espalda, el trabajo a una pierna y un core que resista giros.',
+  'Evita la sesión más dura de pierna justo antes de un entreno o partido exigente.',
+  'Si ya entrenas tu deporte 3 o más días, dos sesiones de fuerza bien hechas suelen bastar.']}
 };
 const LEVELS={n0:{n:'Nunca he entrenado',s:'Empiezo de cero o casi'},n1:{n:'Menos de 1 año',s:'Conozco las máquinas y algún básico'},n2:{n:'Más de 1 año',s:'Entreno con regularidad'}};
 const SEXES={m:'Hombre',f:'Mujer',x:'Prefiero no decirlo'};
 let PF={};
 function profile(){return DB.profile||{}}
-function recommendTpl(p){
-  p=p||{};
-  if(p.lvl==='n0')return 'ini3';
-  if(p.goal==='deporte')return 'fb2';
-  if(p.goal==='salud')return p.lvl==='n2'?'fb3':'ini3';
-  if(p.lvl==='n2')return 'tp4';
-  return 'fb3';
-}
+function recommendTpl(p,nd){return rankTpls(p,nd)[0]}
 function avatarHTML(){
   const n=(profile().name||'').trim();
   return n?esc(n[0].toUpperCase())
@@ -3594,8 +3656,8 @@ function renderGoalCard(){
 let ONB={i:0,steps:[],tpl:null,av:null,diet:false,body:false,after:false};
 function openOnb(){
   PF=Object.assign({},profile());
-  ONB={i:0,tpl:null,av:null,diet:!!DB.cfg.mods.diet,body:!!DB.cfg.mods.body,after:false,
-    steps:['welcome','profile'].concat(DB.plan?[]:['routine']).concat(['days','modules']).concat(isMobile()&&!isStandalone()?['install']:[]).concat(['ready'])};
+  ONB={i:0,tpl:null,av:null,picked:0,diet:!!DB.cfg.mods.diet,body:!!DB.cfg.mods.body,after:false,
+    steps:['welcome','profile','days'].concat(DB.plan?[]:['routine']).concat(['modules']).concat(isMobile()&&!isStandalone()?['install']:[]).concat(['ready'])};
   document.getElementById('onb').classList.add('on');
   renderOnb();
 }
@@ -3606,8 +3668,8 @@ function onbGo(d){
       if(!GOALS[PF.goal]){toast('Elige tu objetivo');return}
       if(!LEVELS[PF.lvl]){toast('Elige tu experiencia');return}
       const h=parseFloat(PF.h);if(PF.h&&!(h>=120&&h<=230)){toast('Revisa la altura (en cm)');return}
-      if(!ONB.tpl&&!DB.plan)ONB.tpl=recommendTpl(PF);
     }
+    if(st==='days'&&!DB.plan&&!ONB.picked)ONB.tpl=recommendTpl(PF,onbAv().length);
     if(st==='routine'&&!ONB.tpl){toast('Elige una rutina');return}
     if(st==='days'&&(!ONB.av||!ONB.av.length)){toast('Elige al menos un día');return}
     if(st==='ready'){finishOnb();return}
@@ -3617,7 +3679,7 @@ function onbGo(d){
 }
 function onbAv(){
   if(ONB.av)return ONB.av;
-  ONB.av=(ONB.tpl&&TPLS[ONB.tpl]?TPLS[ONB.tpl].av:(DB.cfg.avail||[1,3,5])).slice();
+  ONB.av=(DB.cfg.avail&&DB.cfg.avail.length?DB.cfg.avail:[1,3,5]).slice();
   return ONB.av;
 }
 function renderOnb(){
@@ -3633,21 +3695,20 @@ function renderOnb(){
     '<div class="onb-feat"><b>🔒</b><div><div class="t">Tus datos son tuyos</div><div class="s">Solo tú los ves. Las medidas corporales se cifran en tu móvil.</div></div></div>';
   if(st==='profile')h='<h2>Sobre ti</h2><p class="onb-p">Con esto te recomendamos una rutina y adaptamos los consejos.</p><div id="onbForm"></div>';
   if(st==='routine'){
-    const rec=recommendTpl(PF);
-    h='<h2>Tu rutina</h2><p class="onb-p">Te marcamos la que mejor encaja con lo que nos has contado. Podrás cambiarla o editarla cuando quieras.</p>'+
-      Object.entries(TPLS).sort(([a],[b2])=>(b2===rec)-(a===rec)).map(([k,t])=>
-        '<button class="tpl'+(ONB.tpl===k?' cur':'')+'" onclick="ONB.tpl=\''+k+'\';ONB.av=null;renderOnb()">'+
-        '<div class="tpl-t">'+t.n+'<small>'+t.tag+'</small></div>'+
-        (k===rec?'<div class="rec">Recomendada para ti</div>':'')+
-        '<div class="tpl-s"><b style="color:var(--text)">'+t.lvl+'.</b> '+t.h+'</div></button>').join('')+
-      '<button class="tpl own'+(ONB.tpl==='custom'?' cur':'')+'" onclick="ONB.tpl=\'custom\';ONB.av=null;renderOnb()"><div class="tpl-t">Crear la mía</div><div class="tpl-s">Eliges tú los días y los ejercicios.</div></button>';
+    const nd=onbAv().length,order=rankTpls(PF,nd),bd=tplBadges(PF,nd),sel=TPLS[ONB.tpl];
+    h='<h2>Tu rutina</h2><p class="onb-p">Ordenadas según tu objetivo, tu experiencia y tus <b>'+nd+' día'+(nd===1?'':'s')+'</b> de entreno. Podrás cambiarla o editarla cuando quieras.</p>'+
+      order.map(k=>tplCard(k,{cur:ONB.tpl===k,rec:bd[k],nd,click:"ONB.tpl='"+k+"';ONB.picked=1;renderOnb()"})).join('')+
+      '<button class="tpl own'+(ONB.tpl==='custom'?' cur':'')+'" onclick="ONB.tpl=\'custom\';ONB.picked=1;renderOnb()"><div class="tpl-t">Crear la mía</div><div class="tpl-s">Eliges tú los días y los ejercicios.</div></button>'+
+      (sel&&sel.d.length>nd?'<div class="note" style="color:var(--accent3)">Esta rutina tiene '+sel.d.length+' sesiones y has elegido '+nd+' días: cada semana quedará fuera la menos importante. Puedes añadir días en Ajustes.</div>':'');
   }
   if(st==='days'){
-    const av=onbAv(),t=TPLS[ONB.tpl]||(DB.plan&&TPLS[DB.plan.src]),nd=t?t.d.length:(DB.plan?DB.plan.days.length:3);
-    h='<h2>¿Qué días puedes entrenar?</h2><p class="onb-p">Tu rutina tiene <b>'+nd+' sesiones</b> por semana. La app las coloca en estos días y, si te saltas una, la mueve sola.</p>'+
+    const av=onbAv(),nd=DB.plan?DB.plan.days.length:0;
+    h='<h2>¿Qué días puedes entrenar?</h2><p class="onb-p">'+(DB.plan
+      ?'Tu rutina tiene <b>'+nd+' sesiones</b> por semana. La app las coloca en estos días y, si te saltas una, la mueve sola.'
+      :'Marca los días que puedes ir al gimnasio. Con eso te recomendamos una rutina que encaje en tu semana.')+'</p>'+
       '<div class="daysel onb-days">'+[1,2,3,4,5,6,0].map(w=>'<button class="'+(av.includes(w)?'on':'')+'" onclick="onbDay('+w+')">'+WDL[w]+'</button>').join('')+'</div>'+
       '<div class="note" style="text-align:center">'+av.length+' día'+(av.length===1?'':'s')+' elegido'+(av.length===1?'':'s')+
-      (av.length<nd?' · <span style="color:var(--accent3)">menos que sesiones: alguna se quedará fuera cada semana</span>':'')+'</div>';
+      (nd&&av.length<nd?' · <span style="color:var(--accent3)">menos que sesiones: alguna se quedará fuera cada semana</span>':'')+'</div>';
   }
   if(st==='modules'){
     const ck=(on,fn,t,s)=>'<div class="chk'+(on?' on':'')+'" onclick="'+fn+'"><div class="chk-box">'+(on?'✓':'')+'</div><div class="chk-n"><div class="t">'+t+'</div><div class="s">'+s+'</div></div></div>';
@@ -3675,7 +3736,7 @@ function renderOnb(){
   document.getElementById('onbBack').style.visibility=ONB.i?'visible':'hidden';
   document.getElementById('onbNext').textContent=st==='ready'?'Empezar':(st==='welcome'?'Vamos':'Siguiente');
 }
-function onbDay(w){const a=onbAv(),i=a.indexOf(w);if(i>=0)a.splice(i,1);else a.push(w);renderOnb()}
+function onbDay(w){const a=onbAv(),i=a.indexOf(w);if(i>=0)a.splice(i,1);else a.push(w);ONB.picked=0;renderOnb()}
 function finishOnb(){
   DB.profile=Object.assign({},profile(),cleanPF(),{done:1});
   if(ONB.tpl){
