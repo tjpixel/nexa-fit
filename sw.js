@@ -3,7 +3,7 @@
      Si la red no responde en 3,5 s (cobertura mala en el gimnasio) se abre la copia guardada.
    - Librería, tipografías, imágenes e iconos: primero la copia guardada (están versionados).
    - Los datos (Supabase) NUNCA pasan por aquí: siempre van directos a la red. */
-const VER='nexa-fit-v4';
+const VER='nexa-fit-v5';
 const SHELL=['./','./index.html','./manifest.webmanifest','./vendor/supabase-2.117.2.js',
   './fonts/syne.woff2','./fonts/dm-sans.woff2','./fonts/dm-mono-300.woff2','./fonts/dm-mono-400.woff2','./fonts/dm-mono-500.woff2',
   './icons/icon-192.png','./icons/icon-512.png','./icons/apple-touch-icon.png','./icons/favicon.png'];

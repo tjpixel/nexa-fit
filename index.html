@@ -774,6 +774,9 @@ body.light .rday-h input{background:rgba(255,255,255,.75)}
 .cons div{height:26px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono';font-size:10px;color:var(--muted)}
 .cons div.p1{background:rgba(200,245,122,.25);color:var(--text)}
 .cons div.p2{background:rgba(200,245,122,.55);color:#0d0d0f}
+.wkprev{margin-top:10px;padding:10px;border:1px solid var(--border);border-radius:11px;background:var(--surface)}
+.wkprev .wk{margin-top:6px}
+.wkprev-t{font-family:'DM Mono';font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
 .inst{display:flex;gap:12px;align-items:center}
 .inst img{width:46px;height:46px;border-radius:11px;flex-shrink:0}
 .inst .t{font-size:13.5px;font-weight:600}
@@ -1161,12 +1164,13 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 </div></div>
 
 <!-- ══ AJUSTES ══ -->
-<div class="ovl" id="ovlCfg" onclick="if(event.target===this)closeSheet('ovlCfg')"><div class="sheet">
+<div class="ovl" id="ovlCfg" onclick="if(event.target===this)closeCfg()"><div class="sheet">
   <h3>Ajustes</h3>
   <div class="sec-t">Plan</div>
-  <div class="fld"><label>INICIO DEL PLAN</label><input type="date" id="cfgStart"></div>
+  <div class="fld"><label>INICIO DEL PLAN</label><input type="date" id="cfgStart" onchange="cfgSet('start',this.value)"></div>
   <div class="fld"><label>DÍAS EN QUE PUEDO ENTRENAR</label><div class="daysel" id="cfgAvail"></div>
-    <div class="note" style="margin-top:6px">Se usan para colocar las sesiones y reprogramar las que te saltes.</div></div>
+    <div class="wkprev" id="cfgWeek"></div>
+    <div class="note" style="margin-top:6px">Las sesiones se colocan en estos días y, si te saltas una, se mueve sola. Los cambios se aplican al momento.</div></div>
   <button class="btn gh full sm" style="margin-bottom:6px" onclick="closeSheet('ovlCfg');go('rutina')">✎ Cambiar o editar mi rutina</button>
 
   <div class="sec-t">Módulos opcionales</div>
@@ -1179,16 +1183,16 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
   <div class="mod-diet">
     <div class="sec-t">Objetivos de dieta</div>
     <div class="f2">
-      <div class="fld"><label>KCAL</label><input type="number" id="cfgK"></div>
-      <div class="fld"><label>PROTEÍNA (g)</label><input type="number" id="cfgP"></div>
+      <div class="fld"><label>KCAL</label><input type="number" inputmode="numeric" id="cfgK" onchange="cfgSet('k',this.value)"></div>
+      <div class="fld"><label>PROTEÍNA (g)</label><input type="number" inputmode="numeric" id="cfgP" onchange="cfgSet('p',this.value)"></div>
     </div>
     <div class="f2">
-      <div class="fld"><label>GRASA (g)</label><input type="number" id="cfgF"></div>
-      <div class="fld"><label>HIDRATOS (g)</label><input type="number" id="cfgC"></div>
+      <div class="fld"><label>GRASA (g)</label><input type="number" inputmode="numeric" id="cfgF" onchange="cfgSet('f',this.value)"></div>
+      <div class="fld"><label>HIDRATOS (g)</label><input type="number" inputmode="numeric" id="cfgC" onchange="cfgSet('c',this.value)"></div>
     </div>
   </div>
 
-  <div class="brow" style="margin-top:4px"><button class="btn gh" onclick="closeSheet('ovlCfg')">Cancelar</button><button class="btn acc" onclick="saveCfg()">Guardar</button></div>
+  <button class="btn acc full" style="margin-top:4px" onclick="closeCfg()">Listo</button>
 
   <div class="sec-t">App en el móvil</div>
   <div id="cfgApp"></div>
@@ -2006,6 +2010,25 @@ function toggleTheme(){
 
 /* ═════ NAV ═════ */
 let cur='hoy';
+function refreshView(){const y=window.scrollY;go(cur);window.scrollTo(0,y)}
+function closeCfg(){closeSheet('ovlCfg');refreshView()}
+function cfgSet(k,v){
+  if(k==='start'){if(!/^\d{4}-\d{2}-\d{2}$/.test(v))return;DB.cfg.start=v}
+  else{const n=parseFloat(v);if(isNaN(n)||n<0){toast('Valor no válido');return}DB.cfg[k]=n}
+  save();refreshView();renderCfgWeek();
+}
+/* vista previa de la semana dentro de Ajustes */
+function renderCfgWeek(){
+  const el=document.getElementById('cfgWeek');if(!el)return;
+  if(!dayKeys().length){el.innerHTML='';return}
+  const P=planWeek();
+  el.innerHTML='<div class="wkprev-t">Así queda esta semana</div><div class="wk">'+P.week.map(dt=>{
+    const hd=P.map[dt],pl=P.sched[dt],sk=(P.skips||{})[dt],hoy=dt===T();
+    let cls=hd?'on':(sk?'skip':(pl?'plan':'rest'));if(hoy)cls+=' today';
+    return '<div class="'+cls+'">'+WDL[wdOf(dt)]+(hd?'<b>'+hd+'</b>':(pl?'<b>'+pl+'</b>':''))+'</div>';
+  }).join('')+'</div>'+(P.noFit.length?'<div class="note" style="margin-top:6px;color:var(--accent3)">'+
+    (P.noFit.length>1?P.noFit.length+' sesiones no caben':'El Día '+P.noFit[0]+' no cabe')+' en lo que queda de semana. Desde el lunes se reparten de nuevo.</div>':'');
+}
 function go(v){
   if(v==='dieta'&&!DB.cfg.mods.diet)v='hoy';
   if(v==='entreno'&&!dayKeys().length)v='rutina';
@@ -3105,7 +3128,7 @@ function drawAll(){drawCons();drawPR();drawVol();drawEx();if(DB.cfg.mods.body)dr
 function openCfg(){
   const c=DB.cfg;
   document.getElementById('cfgStart').value=c.start||T();
-  renderAvail();
+  renderAvail();renderCfgWeek();
   const m=c.mods||{};
   [['modDiet',m.diet],['modBody',m.body]].forEach(([id,on])=>{
     const el=document.getElementById(id);el.classList.toggle('on',!!on);el.querySelector('.chk-box').textContent=on?'✓':'';
@@ -3131,7 +3154,7 @@ function togAvail(w){
   const av=DB.cfg.avail||[];
   const i=av.indexOf(w);
   if(i>=0){if(av.length<=1){toast('Deja al menos 1 día');return}av.splice(i,1)}else av.push(w);
-  DB.cfg.avail=av.sort();DB.cfg.force=null;save();renderAvail();
+  DB.cfg.avail=av.sort();DB.cfg.force=null;save();renderAvail();renderCfgWeek();refreshView();
 }
 function togDiet(){
   DB.cfg.mods.diet=!DB.cfg.mods.diet;save();applyMods();openCfg();
