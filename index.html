@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="theme-color" content="#0c0c0e">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icons/favicon.png">
@@ -13,14 +13,22 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>NEXA · Fit</title>
 <meta name="description" content="Registro de entrenamiento para alumnos">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js" crossorigin="anonymous"></script>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://dktoscefygleqxkialyy.supabase.co wss://dktoscefygleqxkialyy.supabase.co; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<script src="vendor/supabase-2.117.2.js"></script>
+<link rel="preload" href="fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/syne.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:'Syne';src:url(fonts/syne.woff2) format('woff2');font-weight:400 800;font-style:normal;font-display:swap}
+@font-face{font-family:'DM Sans';src:url(fonts/dm-sans.woff2) format('woff2');font-weight:100 1000;font-style:normal;font-display:swap}
+@font-face{font-family:'DM Mono';src:url(fonts/dm-mono-300.woff2) format('woff2');font-weight:300;font-display:swap}
+@font-face{font-family:'DM Mono';src:url(fonts/dm-mono-400.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'DM Mono';src:url(fonts/dm-mono-500.woff2) format('woff2');font-weight:500;font-display:swap}
 :root{
   --bg:#0d0d0f; --surface:#131316; --card:#1a1a1f;
   --border:#242428; --border-light:#2e2e35;
   --accent:#c8f57a; --accent2:#7af5c8; --accent3:#f5c87a;
-  --muted:#5a5a6e; --text:#e8e8f0; --text-dim:#8888a0;
+  --muted:#72728a; --text:#e8e8f0; --text-dim:#9898ae;
   --done:#c8f57a; --miss:#ff5f5f;
   --radius:14px; --radius-sm:8px;
   --glow:rgba(200,245,122,.35); --glow2:rgba(200,245,122,.4);
@@ -30,13 +38,14 @@ body.light{
   --bg:#eef0f7; --surface:rgba(255,255,255,.62); --card:rgba(255,255,255,.55);
   --border:rgba(120,120,150,.18); --border-light:rgba(120,120,150,.28);
   --accent:#8cc63f; --accent2:#3fa896; --accent3:#d69b2a;
-  --muted:#9a9ab0; --text:#1b1b24; --text-dim:#6a6a80;
+  --muted:#74748c; --text:#1b1b24; --text-dim:#5c5c72;
   --done:#8cc63f; --miss:#e04545;
   --glow:rgba(140,184,80,.35); --glow2:rgba(140,184,80,.4);
   --accent-soft:rgba(140,184,80,.14);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{overscroll-behavior:none}
+html,body{overscroll-behavior:none;touch-action:manipulation;-webkit-text-size-adjust:100%}
+@media (pointer:coarse){input,select,textarea{font-size:16px!important}}
 body{
   font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);
   min-height:100vh;overflow-x:hidden;padding-bottom:88px;
@@ -781,8 +790,8 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
   <div class="tb-row">
     <div class="tb-sub" id="tbSub">Cargando…</div>
     <div class="tb-actions">
-      <button class="icon-btn" id="btnTheme" onclick="toggleTheme()" title="Tema">◐</button>
-      <button class="icon-btn cfg-btn" onclick="openCfg()" title="Ajustes">⚙<i class="sync-dot" id="syncDot"></i></button>
+      <button class="icon-btn" id="btnTheme" onclick="toggleTheme()" title="Tema claro u oscuro" aria-label="Cambiar tema"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
+      <button class="icon-btn cfg-btn" onclick="openCfg()" title="Ajustes" aria-label="Ajustes">⚙<i class="sync-dot" id="syncDot"></i></button>
       <button class="icon-btn prof-btn" id="btnProfile" onclick="openProfile()" title="Mi perfil" aria-label="Mi perfil"></button>
     </div>
   </div>
@@ -1273,7 +1282,7 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 </div></div>
 
 <!-- ══ DESBLOQUEAR MEDIDAS ══ -->
-<div class="ovl" id="ovlUnlock" onclick="if(event.target===this)closeSheet('ovlUnlock')"><div class="sheet">
+<div class="ovl" id="ovlUnlock" style="z-index:235" onclick="if(event.target===this)closeSheet('ovlUnlock')"><div class="sheet">
   <h3>Desbloquear medidas</h3>
   <div class="fld"><label>CLAVE DE MEDIDAS</label><input type="password" id="ulP" autocomplete="current-password" onkeydown="if(event.key==='Enter')bodyUnlock()"></div>
   <label class="tick"><input type="checkbox" id="ulRem" checked><span>Recordarla en este dispositivo</span></label>
@@ -1418,11 +1427,13 @@ function schedulePush(){
 }
 async function push(){
   if(!CLOUD||!USER||!sb)return true;
+  if(OFFLINE_USER){DB._dirty=true;writeLocal();syncDot('err');return false}
   if(pushing){schedulePush();return false}
   pushing=true;clearTimeout(pushT);
   const ts=DB._ts||Date.now();
   try{
-    const {error}=await sb.from('nexa_fit_data').upsert({user_id:USER.id,data:DB,updated_at:new Date(ts).toISOString()});
+    const payload=Object.assign({},DB);delete payload._dirty;
+    const {error}=await sb.from('nexa_fit_data').upsert({user_id:USER.id,data:payload,updated_at:new Date(ts).toISOString()});
     if(error)throw error;
     DB._dirty=false;writeLocal();syncDot('ok');return true;
   }catch(e){DB._dirty=true;writeLocal();syncDot('err');return false}
@@ -1430,6 +1441,7 @@ async function push(){
 }
 async function pull(){
   if(!CLOUD||!USER||!sb)return false;
+  if(OFFLINE_USER){syncDot('err');return false}
   syncDot('busy');
   try{
     const {data,error}=await sb.from('nexa_fit_data').select('data').eq('user_id',USER.id).maybeSingle();
@@ -1437,6 +1449,11 @@ async function pull(){
     const remote=data&&data.data;
     if(remote&&(remote._ts||0)>(DB._ts||0)){
       if(document.getElementById('ovlGS').classList.contains('on')){syncDot('ok');return false}  // no pisar una sesión en curso
+      if(DB._dirty){
+        // hay cambios aquí sin subir (p. ej. entreno sin cobertura) y otro dispositivo guardó después: se combinan
+        DB=await mergeData(DB,mergeDefaults(remote));DB._ts=Date.now();DB._dirty=true;writeLocal();
+        await afterDataChange();await push();return true;
+      }
       DB=mergeDefaults(remote);DB._dirty=false;writeLocal();syncDot('ok');
       await afterDataChange();return true;
     }
@@ -1444,6 +1461,32 @@ async function pull(){
     else syncDot('ok');
   }catch(e){syncDot('err')}
   return false;
+}
+/* combina dos copias: rutina, perfil y ajustes de la más reciente (remota);
+   entrenos, dieta, suplementos y saltos se unen día a día sin perder nada */
+async function mergeData(loc,rem){
+  const out=JSON.parse(JSON.stringify(rem));
+  const filled=a=>(a||[]).filter(x=>x&&x.r).length;
+  Object.entries(loc.sess||{}).forEach(([d,ls])=>{
+    const rs=out.sess[d];
+    if(!rs){out.sess[d]=ls;return}
+    const ex=Object.assign({},rs.ex);
+    Object.entries(ls.ex||{}).forEach(([id,sets])=>{if(!ex[id]||filled(sets)>=filled(ex[id]))ex[id]=sets});
+    out.sess[d]=Object.assign({},rs,{ex,day:ls.day||rs.day,dur:Math.max(ls.dur||0,rs.dur||0)||undefined});
+  });
+  Object.entries(loc.diet||{}).forEach(([d,v])=>{if(!out.diet[d]||(v.items||[]).length>(out.diet[d].items||[]).length)out.diet[d]=v});
+  Object.entries(loc.supp||{}).forEach(([d,v])=>{out.supp[d]=Object.assign({},out.supp[d],v)});
+  Object.entries(loc.skips||{}).forEach(([d,v])=>{if(!out.skips[d])out.skips[d]=v});
+  Object.entries(loc.cex||{}).forEach(([id,e])=>{if(!out.cex[id])out.cex[id]=e});
+  // medidas: si la clave está abierta y ambas copias usan la misma, se combinan por fecha
+  if(BODY.key&&loc.bodyEnc&&rem.bodyEnc&&loc.bodyEnc.ct!==rem.bodyEnc.ct&&loc.bodyEnc.salt===rem.bodyEnc.salt){
+    try{
+      const prev=DB;DB=rem;const remData=await decBody(BODY.key);DB=prev;
+      BODY.data=Object.assign({},remData,BODY.data||{});
+      const keep=DB;DB=out;await encBody();DB=keep;
+    }catch(e){}
+  }
+  return mergeDefaults(out);
 }
 async function afterDataChange(){
   buildPlan();
@@ -1520,6 +1563,7 @@ async function onAuth(ev,session){
     if(started&&USER&&USER.id===session.user.id)return;
     USER=session.user;S.set(KEY+'_last',JSON.stringify({id:USER.id,email:USER.email}));hideAuth();await startApp();
   }else if(ev==='SIGNED_OUT'||ev==='INITIAL_SESSION'){
+    if(ev==='INITIAL_SESSION'&&!navigator.onLine&&offlineResume())return;
     USER=null;started=false;
     if(!document.getElementById('auth').classList.contains('on'))showAuth();
   }
@@ -1637,7 +1681,7 @@ const EXC={
  cardiof:{n:'Cardio final',g:'Cardio',s:1,lo:10,hi:10,r:0,inc:0,seg:1,min:1,spd:1,tip:'Suave, para cerrar la sesión',k:['Ritmo cómodo','Puedes hablar con frases completas','Postura erguida']}
 };
 // imágenes disponibles en img/ (las que no existan se ocultan solas)
-const IMG={plancha:'img/plancha.webp',femoral:'img/femoral.webp',elevp:'img/elevp.webp',jalon:'img/jalon.webp',pressp:'img/pressp.webp',plancL:'img/plancL.webp',hipth:'img/hipth.webp',prensa:'img/prensa.webp',puente:'img/puente.webp',abduc:'img/abduc.webp',remo:'img/remo.webp',kickb:'img/kickb.webp',cardio:'img/cardio25.webp',cardiof:'img/cardio25.webp',laterales:'img/latmanc.webp',crunchpol:'img/crunchpol.webp'};
+const IMG={plancha:'img/plancha.webp',femoral:'img/femoral.webp',elevp:'img/elevp.webp',jalon:'img/jalon.webp',pressp:'img/pressp.webp',plancL:'img/plancL.webp',hipth:'img/hipth.webp',prensa:'img/prensa.webp',puente:'img/puente.webp',remo:'img/remo.webp',kickb:'img/kickb.webp',cardio:'img/cardio25.webp',cardiof:'img/cardio25.webp',laterales:'img/latmanc.webp',crunchpol:'img/crunchpol.webp'};
 
 /* ═════ PLANTILLAS ═════
    d: días [nombre, [ids]] · prio: qué días conservar primero si no caben todos · av: días de la semana sugeridos (0=D) */
@@ -1854,7 +1898,77 @@ function mergeDefaults(o){
   r.cfg.mods=Object.assign({diet:false,body:false},(o.cfg||{}).mods||{});
   ['cex','sess','skips','supp','diet','profile'].forEach(k=>{if(!r[k]||typeof r[k]!=='object')r[k]={}});
   delete r.body;                                  // las medidas nunca viajan en claro
-  return r;
+  return sanitizeDB(r);
+}
+/* Todo lo que entra (copia local, nube o archivo importado) se valida campo a campo:
+   solo pasan números donde van números y textos limpios donde van textos. Evita inyección de código
+   a través de un archivo de rutina compartido y protege de datos corruptos. */
+const RX_ID=/^[A-Za-z0-9_-]{1,40}$/,RX_DATE=/^\d{4}-\d{2}-\d{2}$/,RX_B64=/^[A-Za-z0-9+/=]{0,3000000}$/;
+const sNum=(v,min,max)=>{const n=typeof v==='number'?v:parseFloat(v);return isFinite(n)?Math.min(max,Math.max(min,n)):undefined};
+const sStr=(v,max)=>String(v==null?'':v).replace(/[<>"'&\\`]/g,'').trim().slice(0,max);
+const isObj=o=>o&&typeof o==='object'&&!Array.isArray(o);
+function sanitizeDB(r){
+  const out={v:2,_ts:sNum(r._ts,0,9e15)||0};if(r._dirty)out._dirty=true;
+  // perfil
+  const pf=isObj(r.profile)?r.profile:{};out.profile={};
+  if(pf.name)out.profile.name=sStr(pf.name,30);
+  if(['m','f','x'].includes(pf.sex))out.profile.sex=pf.sex;
+  const h=sNum(pf.h,120,230);if(h)out.profile.h=Math.round(h);
+  if(['grasa','musculo','fuerza','salud','deporte'].includes(pf.goal))out.profile.goal=pf.goal;
+  if(['n0','n1','n2'].includes(pf.lvl))out.profile.lvl=pf.lvl;
+  if(pf.done)out.profile.done=1;
+  // rutina
+  out.plan=null;
+  if(isObj(r.plan)&&Array.isArray(r.plan.days)){
+    const days=r.plan.days.slice(0,6).filter(isObj).map((d,i)=>({n:sStr(d.n,40)||('Día '+(i+1)),
+      ex:(Array.isArray(d.ex)?d.ex:[]).filter(x=>isObj(x)&&RX_ID.test(x.id)).slice(0,25).map(x=>{
+        const o={id:x.id};[['s',1,10],['lo',1,999],['hi',1,999],['r',0,600]].forEach(([k,a,b])=>{const v=sNum(x[k],a,b);if(v!=null)o[k]=Math.round(v)});return o})}));
+    if(days.length)out.plan={src:sStr(r.plan.src,20).replace(/[^a-z0-9_]/gi,'')||'custom',edited:!!r.plan.edited,
+      prio:(Array.isArray(r.plan.prio)?r.plan.prio:[]).map(Number).filter(n=>n>=1&&n<=days.length),days};
+  }
+  // ejercicios propios
+  out.cex={};
+  if(isObj(r.cex))Object.entries(r.cex).slice(0,200).forEach(([id,e])=>{
+    if(!RX_ID.test(id)||!isObj(e))return;
+    const t=TYPES[e.t]?e.t:'peso',o=Object.assign({},TYPES[t].d,{n:sStr(e.n,60)||'Ejercicio',g:GROUPS.includes(e.g)?e.g:'Core',t,
+      k:(Array.isArray(e.k)?e.k:[]).map(x=>sStr(x,140)).filter(Boolean).slice(0,12)});
+    [['s',1,10],['lo',1,999],['hi',1,999],['r',0,600],['inc',0,50]].forEach(([k,a,b])=>{const v=sNum(e[k],a,b);if(v!=null)o[k]=v});
+    if(e.side)o.side=1;if(e.del)o.del=1;out.cex[id]=o;
+  });
+  // sesiones
+  out.sess={};
+  if(isObj(r.sess))Object.entries(r.sess).forEach(([d,x])=>{
+    if(!RX_DATE.test(d)||!isObj(x))return;
+    const o={day:Math.round(sNum(x.day,0,6)||0),ex:{}};const du=sNum(x.dur,0,1440);if(du!=null)o.dur=Math.round(du);
+    if(isObj(x.ex))Object.entries(x.ex).forEach(([id,sets])=>{
+      if(!RX_ID.test(id)||!Array.isArray(sets))return;
+      o.ex[id]=sets.slice(0,40).map(q=>{if(!isObj(q))return null;const z={};
+        [['w',0,1000],['r',0,10000],['rir',0,10],['sp',0,50]].forEach(([k,a,b])=>{const v=sNum(q[k],a,b);if(v!=null)z[k]=v});return z});
+    });
+    out.sess[d]=o;
+  });
+  // saltos, suplementos marcados, dieta
+  out.skips={};if(isObj(r.skips))Object.entries(r.skips).forEach(([d,v])=>{const n=sNum(v,1,6);if(RX_DATE.test(d)&&n)out.skips[d]=Math.round(n)});
+  out.supp={};if(isObj(r.supp))Object.entries(r.supp).forEach(([d,v])=>{if(!RX_DATE.test(d)||!isObj(v))return;out.supp[d]={};
+    Object.entries(v).forEach(([id,on])=>{if(RX_ID.test(id)&&on)out.supp[d][id]=true})});
+  out.diet={};if(isObj(r.diet))Object.entries(r.diet).forEach(([d,v])=>{if(!RX_DATE.test(d)||!isObj(v))return;
+    out.diet[d]={items:(Array.isArray(v.items)?v.items:[]).filter(isObj).slice(0,200).map(x=>({n:sStr(x.n,60)||'Alimento',k:sNum(x.k,0,10000)||0,p:sNum(x.p,0,1000)||0}))}});
+  // medidas cifradas: solo base64
+  const E=r.bodyEnc;out.bodyEnc=null;
+  if(isObj(E)&&RX_B64.test(E.salt||'')&&RX_B64.test(E.iv||'')&&RX_B64.test(E.ct||''))
+    out.bodyEnc={v:1,salt:E.salt,iter:Math.round(sNum(E.iter,100000,5000000)||310000),iv:E.iv,ct:E.ct};
+  else if(isObj(E)&&RX_B64.test(E.salt||'')&&!E.ct)out.bodyEnc={v:1,salt:E.salt,iter:Math.round(sNum(E.iter,100000,5000000)||310000)};
+  // ajustes
+  const c=isObj(r.cfg)?r.cfg:{},f=freshDB().cfg;
+  out.cfg={start:RX_DATE.test(c.start)?c.start:'',
+    k:sNum(c.k,0,10000)??f.k,p:sNum(c.p,0,1000)??f.p,f:sNum(c.f,0,1000)??f.f,c:sNum(c.c,0,2000)??f.c,
+    avail:(Array.isArray(c.avail)?c.avail:f.avail).map(Number).filter((n,i,a)=>n>=0&&n<=6&&Number.isInteger(n)&&a.indexOf(n)===i),
+    force:c.force==null?null:Math.round(sNum(c.force,0,6)||0),
+    mods:{diet:!!(c.mods&&c.mods.diet),body:!!(c.mods&&c.mods.body)},
+    supps:(Array.isArray(c.supps)?c.supps:[]).filter(x=>isObj(x)&&RX_ID.test(x.id)).slice(0,30).map(x=>({id:x.id,t:sStr(x.t,40)||'Suplemento',s:sStr(x.s,60)})),
+    tour:c.tour?1:0};
+  if(!out.cfg.avail.length)out.cfg.avail=f.avail.slice();
+  return out;
 }
 let DB=freshDB();
 function load(){
@@ -3072,7 +3186,10 @@ async function doImport(){
   let o;
   try{o=JSON.parse(v)}catch(e){toast('JSON no válido');return}
   if(!o||typeof o!=='object'){toast('JSON no válido');return}
-  const plainBody=o.body&&typeof o.body==='object'?o.body:null;   // copias de versiones sin cifrado
+  let plainBody=null;                                             // copias de versiones sin cifrado
+  if(o.body&&typeof o.body==='object'){plainBody={};Object.entries(o.body).forEach(([d,v])=>{
+    if(!RX_DATE.test(d)||!isObj(v))return;const z={};[['w',20,400],['c',30,250],['g',2,70],['n',20,70],['hp',40,250]].forEach(([k,a,b])=>{const x=sNum(v[k],a,b);if(x!=null)z[k]=x});
+    if(Object.keys(z).length)plainBody[d]=z})}
   delete o.body;delete o._ts;delete o._dirty;
   ['sess','diet','supp','skips','cex'].forEach(k=>{if(o[k])o[k]=Object.assign({},DB[k],o[k])});
   if(o.cfg)o.cfg=Object.assign({},DB.cfg,o.cfg,{mods:Object.assign({},DB.cfg.mods,o.cfg.mods||{})});
@@ -3680,6 +3797,17 @@ async function startApp(){
   else if(!DB.plan)openTplPicker(true);
   else go(cur);
 }
+/* sin conexión: si este dispositivo ya tenía la sesión de un alumno, se abre con sus datos
+   y al volver la conexión se recarga para validar la sesión y sincronizar */
+let OFFLINE_USER=false;
+function offlineResume(){
+  let last=null;try{last=JSON.parse(S.get(KEY+'_last')||'null')}catch(e){}
+  if(!(last&&last.id&&S.get(KEY+'_'+last.id)))return false;
+  USER={id:last.id,email:last.email};OFFLINE_USER=true;hideAuth();
+  startApp().then(()=>{syncDot('err');toast('Sin conexión: tus cambios se guardan y se sincronizarán')});
+  return true;
+}
+window.addEventListener('online',()=>{if(OFFLINE_USER){if(DB._dirty)writeLocal();location.reload()}});
 function boot(){
   applyTheme();
   if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
@@ -3693,9 +3821,7 @@ function boot(){
   window.addEventListener('online',()=>{if(started&&DB._dirty)push()});
   if(!CLOUD){startApp();return}
   if(!window.supabase){
-    // sin conexión y sin la librería: si ya había una sesión en este dispositivo, se abre en modo sin conexión
-    let last=null;try{last=JSON.parse(S.get(KEY+'_last')||'null')}catch(e){}
-    if(last&&last.id&&S.get(KEY+'_'+last.id)){USER=last;startApp().then(()=>{syncDot('err');toast('Sin conexión: se sincronizará al volver')});return}
+    if(offlineResume())return;
     showAuth('No se pudo conectar con el servicio de cuentas. Revisa tu conexión y recarga la página.');
     document.getElementById('auGo').disabled=true;return;
   }
