@@ -126,6 +126,17 @@ body.light .gnext{color:#fff}
 .gbrow{display:flex;gap:8px;margin-top:9px}
 .gtoolrow{display:flex;gap:7px;justify-content:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
 .gbrow button{flex:1}
+.grmini{display:flex;align-items:center;gap:11px;margin-top:12px;padding:8px 10px 8px 8px;border-radius:13px;
+  border:1px solid var(--accent);background:var(--accent-soft);animation:up .22s ease}
+.grmini svg{transform:rotate(-90deg);flex-shrink:0;display:block}
+.grmini .gm-t{flex:1;min-width:0;line-height:1.15}
+.grmini .gm-t b{font-family:'Syne';font-size:22px;font-weight:700;letter-spacing:-.5px;display:block}
+.grmini .gm-t s{font-size:9.5px;color:var(--text-dim);text-decoration:none;letter-spacing:1px;text-transform:uppercase}
+.grmini button{border:1px solid var(--border);background:var(--card);color:var(--text-dim);border-radius:9px;
+  font-family:'DM Mono';font-size:12px;padding:8px 10px;cursor:pointer;flex-shrink:0}
+.grmini button:active{transform:scale(.94)}
+.grmini.end{background:var(--accent)}
+.grmini.end .gm-t b,.grmini.end .gm-t s{color:#0d0d0f}
 
 .daysel{display:flex;align-items:center;gap:5px;margin-bottom:12px}
 .daysel>span{font-family:'DM Mono';font-size:9.5px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-right:3px;flex-shrink:0}
@@ -2370,7 +2381,7 @@ function renderBar(){
   }else{
     const sd=sideOf(e,GS.si);
     nm.textContent=e.n+' · S'+setNo(e,GS.si)+'/'+e.s+(sd?' '+sd.slice(0,3):'');
-    if(GS.ph==='rest')drawGT();
+    if(GS.ph==='rest'||(GS.bg&&GS.tEnd))drawGT();
     else if(GS.wOn)drawWT();
     else{
       sub.textContent='Toca para continuar';
@@ -2393,7 +2404,7 @@ function openPick(){
   document.getElementById('ovlPick').classList.add('on');
 }
 function jumpEx(i){
-  clearInterval(GS.tI);wStop();GS.ann=null;GS.last=0;
+  clearInterval(GS.tI);GS.tEnd=0;GS.bg=0;wStop();GS.ann=null;GS.last=0;
   const e=PLAN[GS.day].ex[i],sets=DB.sess[T()]?.ex?.[e.id]||[],st=nSteps(e);
   let si=st-1;
   for(let j=0;j<st;j++){if(!(sets[j]&&sets[j].r)){si=j;break}}
@@ -2416,8 +2427,9 @@ function openKeys(day,ei){
 }
 
 /* ═════ MODO GUIADO ═════ */
-let GS={day:1,ei:0,si:0,ph:'intro',t0:0,tI:null,tL:0,tT:0,wI:null,wEl:0,wOn:false,ann:null,last:0,min:0};
+let GS={day:1,ei:0,si:0,ph:'intro',t0:0,tI:null,tL:0,tT:0,wI:null,wEl:0,wOn:false,ann:null,last:0,min:0,bg:0};
 const RC=402.1; // 2·π·64
+const RM=113.1; // 2·π·18 (anillo pequeño)
 const TOOLS=m=>'<div class="gtools">'+
   (m?'<button class="gmin" onclick="minGS()" title="Minimizar">─</button>':'')+
   '<button class="gclose" onclick="closeGS()">✕</button></div>';
@@ -2462,7 +2474,7 @@ function openGuided(day){
 }
 function closeGS(){
   keepAwake(false);
-  clearInterval(GS.tI);clearInterval(GS.wI);GS.wOn=false;GS.wEl=0;GS.min=0;
+  clearInterval(GS.tI);clearInterval(GS.wI);GS.wOn=false;GS.wEl=0;GS.min=0;GS.bg=0;GS.tEnd=0;
   document.getElementById('gbar').classList.remove('on');
   document.querySelector('.topbar').classList.remove('busy');
   document.getElementById('ovlGS').classList.remove('on');
@@ -2531,7 +2543,12 @@ function renderGS(){
   const head='<div class="ghead"><div class="gstep">Ejercicio '+(GS.ei+1)+' de '+p.ex.length+'</div>'+TOOLS(1)+'</div>'+
     '<div class="gex">'+e.n+'</div><div class="gset">Serie '+setNo(e,GS.si)+' de '+e.s+
     (sd?' <span style="color:var(--accent3)">· '+sd+'</span>':'')+'</div>'+
-    '<div class="gprog">'+bars+'</div>';
+    '<div class="gprog">'+bars+'</div>'+
+    (GS.bg&&GS.tEnd?'<div class="grmini" id="gMini"><svg width="44" height="44" viewBox="0 0 44 44">'+
+      '<circle cx="22" cy="22" r="18" fill="none" stroke="var(--border)" stroke-width="4"/>'+
+      '<circle id="gmArc" cx="22" cy="22" r="18" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-dasharray="'+RM+'"/></svg>'+
+      '<div class="gm-t"><b id="gmT">0:00</b><s id="gmLab">descanso · prepárate</s></div>'+
+      '<button onclick="gAdd(30)">+30 s</button><button onclick="gEndRest()" title="Terminar el descanso">✕</button></div>':'');
   const tools='<div class="gtoolrow">'+
     (e.k&&e.k.length?'<button class="kbtn" onclick="openKeys('+GS.day+','+GS.ei+')">Claves técnicas</button>':'')+
     '<button class="kbtn" onclick="openPick()">Cambiar ejercicio</button></div>';
@@ -2572,12 +2589,17 @@ function renderGS(){
       '<div class="gslot">'+ann+'</div>'+
       tools+(GS.last
         ?'<div class="gbrow"><button class="gnext" onclick="GS.ph=\'done\';renderGS()">Terminar sesión</button></div>'
-        :'<div class="gbrow"><button class="gnext sec" onclick="gAdd(30)">+30 s</button>'+
-         '<button class="gnext sec" onclick="gSkip()">Saltar →</button></div>');
+        :(GS.si>=st-1
+          ?'<div class="gbrow"><button class="gnext sec" style="flex:0 0 30%" onclick="gAdd(30)">+30 s</button>'+
+           '<button class="gnext" style="margin-top:0" onclick="gPrep()">Siguiente ejercicio →</button></div>'+
+           '<div class="glab" style="margin:8px 0 0">el descanso sigue corriendo mientras preparas la máquina</div>'
+          :'<div class="gbrow"><button class="gnext sec" onclick="gAdd(30)">+30 s</button>'+
+           '<button class="gnext sec" onclick="gSkip()">Saltar →</button></div>'));
     drawGT();
     return;
   }
   // ph === 'set'
+  if(GS.bg)setTimeout(drawGT,0);
   const a=advise(e),sets=DB.sess[T()]?.ex?.[e.id]||[],s=sets[GS.si]||{};
   const prevW=s.w??(GS.si>0?sets[GS.si-1]?.w:undefined)??(a.w||'');
   const tgtTxt=e.lo===e.hi?('objetivo '+e.hi+' '+unit):('objetivo '+e.lo+'-'+e.hi+' '+unit);
@@ -2616,6 +2638,7 @@ function renderGS(){
 function wToggle(){
   const p=PLAN[GS.day],e=p.ex[GS.ei];
   if(!GS.wOn){
+    if(GS.bg)gEndRest();
     GS.wEl=0;GS.wOn=true;GS.wStart=Date.now();drawWT();
     const act=document.getElementById('wAct');
     if(act)act.textContent='parar y anotar';
@@ -2669,6 +2692,7 @@ function wReset(){
   wToggle();toast('Cronómetro reiniciado');
 }
 function gDone(){
+  if(GS.bg)gEndRest();
   const p=PLAN[GS.day],e=p.ex[GS.ei];
   const gv=id=>{const el=document.getElementById(id);if(!el)return undefined;const v=parseFloat(el.value);return isNaN(v)?undefined:v};
   const d=T();DB.sess[d]=DB.sess[d]||{day:GS.day,ex:{}};DB.sess[d].day=GS.day;
@@ -2737,11 +2761,32 @@ function gAdvance(){
   GS.ph='set';
 }
 function gSkip(){
-  clearInterval(GS.tI);
+  clearInterval(GS.tI);GS.tEnd=0;GS.bg=0;
   const p=PLAN[GS.day];
   if(GS.ph==='rest'){gAdvance();renderGS();return}
   if(GS.si>=nSteps(p.ex[GS.ei])-1&&GS.ei>=p.ex.length-1){GS.ph='done';renderGS();return}
   gAdvance();renderGS();
+}
+/* pasar al siguiente ejercicio sin cortar el descanso: el contador sigue en pequeño arriba */
+function gPrep(){
+  if(!GS.tEnd){gSkip();return}
+  GS.bg=1;gAdvance();renderGS();
+}
+/* termina el descanso que corría en segundo plano (sin volver a pintar: no se pierde el peso que estés escribiendo) */
+function gEndRest(done){
+  clearInterval(GS.tI);GS.tEnd=0;GS.bg=0;
+  const m=document.getElementById('gMini');
+  if(m){
+    if(done){
+      m.classList.add('end');
+      const t=document.getElementById('gmT'),l=document.getElementById('gmLab');
+      if(t){t.textContent='¡Listo!';t.style.color=''}
+      if(l)l.textContent='descanso terminado';
+      m.querySelectorAll('button').forEach(b=>b.remove());
+      setTimeout(()=>m.remove(),2500);
+    }else m.remove();
+  }
+  if(GS.min)renderBar();
 }
 function gStart(sec){
   GS.tT=sec;GS.tL=sec;GS.tEnd=Date.now()+sec*1000;clearInterval(GS.tI);drawGT();
@@ -2756,6 +2801,7 @@ function gTick(){
     if(L>0&&((prev>10&&L<=10)||(prev>3&&L<=3)))buzz(60);
   }
   if(L<=0){
+    if(GS.bg){ding();gEndRest(1);return}
     clearInterval(GS.tI);GS.tEnd=0;ding();gAdvance();renderGS();
     const ne=PLAN[GS.day].ex[GS.ei];
     if(GS.ph==='set'&&ne&&ne.seg&&!GS.wOn)wToggle();
@@ -2766,7 +2812,15 @@ function drawGT(){
   const L=Math.max(0,GS.tL),m=Math.floor(L/60),sc=L%60;
   const txt=m+':'+String(sc).padStart(2,'0');
   const col=L<=3?'var(--miss)':(L<=10?'var(--accent3)':'var(--accent)');
-  const t=document.getElementById('gT'),arc=document.getElementById('gArc'),lab=document.getElementById('gLab');
+  if(GS.bg){
+    const t=document.getElementById('gmT'),arc=document.getElementById('gmArc'),lab=document.getElementById('gmLab');
+    if(t&&arc){
+      t.textContent=txt;t.style.color=L<=10?col:'var(--text)';
+      arc.setAttribute('stroke-dashoffset',-RM*(1-L/GS.tT));arc.setAttribute('stroke',col);
+      if(lab)lab.textContent=L<=10?'prepárate':'descanso · prepárate';
+    }
+  }
+  const t=GS.bg?null:document.getElementById('gT'),arc=document.getElementById('gArc'),lab=document.getElementById('gLab');
   if(t&&arc){
     t.textContent=txt;
     arc.setAttribute('stroke-dashoffset',-RC*(1-L/GS.tT));
@@ -2956,7 +3010,7 @@ document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState!=='visible')return;
   const gsOn=document.getElementById('ovlGS').classList.contains('on')||(GS.min&&GS.ph!=='intro');
   if(gsOn)keepAwake(true);
-  if(GS.ph==='rest'&&GS.tEnd)gTick();
+  if((GS.ph==='rest'||GS.bg)&&GS.tEnd)gTick();
 });
 function ding(){
   flash(true);
