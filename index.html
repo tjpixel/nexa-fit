@@ -16,6 +16,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://dktoscefygleqxkialyy.supabase.co wss://dktoscefygleqxkialyy.supabase.co; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <script src="vendor/supabase-2.117.2.js"></script>
+<script src="deshi.js"></script>
 <link rel="preload" href="fonts/dm-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/syne.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -645,6 +646,43 @@ body.light .prof-btn.has-name{color:#fff}
 .avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--accent);color:#0d0d0f;font-family:'Syne';font-weight:700}
 .avatar.big{width:54px;height:54px;font-size:22px;flex-shrink:0}
 .avatar svg{width:24px;height:24px}
+
+/* ═════ DESHI · alumno del dojo ═════ */
+:root{--stage:#1f2219;--tatami:#2e3324}
+body.light{--stage:#e6edd6;--tatami:#d0dbb6}
+.dk-stage{border-radius:12px;background:linear-gradient(180deg,var(--stage) 0%,var(--stage) 82%,var(--tatami) 82%,var(--tatami) 100%);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;flex-shrink:0;overflow:hidden}
+.prof-btn.dk-av{background:var(--stage);border-color:var(--accent);padding:0;overflow:hidden}
+.avatar.dk-av{background:var(--stage);border:2px solid var(--accent);overflow:hidden}
+.avatar .deshi svg{width:auto;height:auto}
+.dk-row{display:flex;gap:12px;align-items:stretch}
+.dk-row>.dk-main{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.dk-mood{font-family:'DM Mono';font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:10px}
+.dk-row .empty{text-align:left;padding:8px 0}
+.gs-rest{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px}
+.gs-rest .gcircle{margin:0}
+.dk-pause{display:flex;gap:12px;align-items:center;margin-top:12px;padding:10px;border-radius:12px;border:1px dashed var(--accent3);background:rgba(245,200,122,.06)}
+.dk-pause b{display:block;font-family:'Syne';font-weight:700;font-size:15px;line-height:1.2}
+.dk-pause span{display:block;font-size:12px;color:var(--text-dim);line-height:1.45;margin-top:4px}
+.dk-lab{font-family:'DM Mono';font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:14px 0 7px}
+.dk-chips{display:flex;gap:7px;flex-wrap:wrap}
+.dk-chip{min-width:44px;min-height:40px;border-radius:10px;background:var(--bg);border:1px solid var(--border);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;padding:0 10px;gap:7px;font-family:'DM Sans';font-size:12px;color:var(--text)}
+.dk-chip.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.dk-chip i{display:block;width:16px;height:16px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(128,128,128,.35)}
+.dk-chip i.belt{width:22px;height:7px;border-radius:2px}
+.dk-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.dk-2 .dk-chips{gap:6px}.dk-2 .dk-chip{min-width:36px;padding:0}
+.dk-view{text-align:center}
+.dk-view .dk-stage{height:300px;margin-top:14px}
+.dk-view .t{font-family:'Syne';font-size:21px;font-weight:700;margin-top:14px}
+.dk-view .u{font-size:12.5px;color:var(--text-dim);margin-top:4px}
+.dk-nav{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.dk-nav button{width:52px;height:52px;border-radius:14px;border:1px solid var(--border-light);background:var(--card);color:var(--text);font-size:20px;cursor:pointer}
+.dk-dots{display:flex;gap:5px}
+.dk-dots i{width:7px;height:7px;border-radius:50%;background:var(--border-light)}
+.dk-dots i.on{background:var(--accent)}
+@media (max-width:360px){.gs-rest{gap:8px}.gs-rest .dk-stage{width:84px!important}}
 .prof-h{display:flex;align-items:center;gap:14px;margin-bottom:6px}
 .prof-n{font-family:'Syne';font-size:18px;font-weight:700;line-height:1.2}
 .prof-e{font-size:12px;color:var(--text-dim);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -938,6 +976,7 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
   <div class="card">
     <div class="card-t">Constancia <span class="hint">últimas 8 semanas</span></div>
     <div class="sgrid" id="consStats"></div>
+    <div id="consPause"></div>
     <div class="cons" id="consGrid"></div>
     <div class="note">Cada casilla es una semana: más verde = más sesiones de tu rutina completadas. La racha cuenta semanas completas seguidas.</div>
   </div>
@@ -1103,6 +1142,7 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 <!-- ══ ACCESO ══ -->
 <div class="auth" id="auth">
   <div class="auth-card">
+    <div class="dk-stage" style="height:150px;margin-bottom:16px"><span class="deshi" id="auDeshi" data-pose="stand" data-cell="1.9"></span></div>
     <div class="auth-brand">NEXA<span>·</span>Fit</div>
     <div class="auth-sub" id="authSub">Tu entrenamiento, tus datos.</div>
     <div class="seg" id="authSeg">
@@ -1215,6 +1255,13 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 <!-- ══ PERFIL ══ -->
 <div class="ovl" id="ovlProf" onclick="if(event.target===this)closeSheet('ovlProf')"><div class="sheet">
   <div class="prof-h"><div class="avatar big" id="profAv"></div><div style="min-width:0"><div class="prof-n" id="profName"></div><div class="prof-e" id="profMail"></div></div></div>
+  <div class="sec-t">Tu Deshi</div>
+  <div class="dk-row">
+    <div class="dk-stage" style="width:104px;height:140px"><span class="deshi" data-pose="stand" data-cell="1.8"></span></div>
+    <div class="dk-main"><div class="note" style="margin:0">Te acompaña en cada sesión: saluda al empezar, descansa contigo y celebra cuando terminas. El cinturón es el de tu grado en el dojo.</div></div>
+  </div>
+  <button class="btn gh full sm" style="margin-top:10px" onclick="openDkView()">Ver todas las animaciones</button>
+  <div id="dkPick"></div>
   <div class="sec-t">Sobre ti</div>
   <div id="profForm"></div>
   <button class="btn acc full" onclick="saveProfile()">Guardar perfil</button>
@@ -1233,6 +1280,16 @@ body.light .cons div.p3,body.light .cons div.p2{color:#fff}
 
   <div class="sec-t">Ayuda</div>
   <button class="btn gh full sm" onclick="closeSheet('ovlProf');startTour()">Ver el tutorial otra vez</button>
+</div></div>
+
+<!-- ══ DESHI · VISOR DE ANIMACIONES ══ -->
+<div class="ovl gs" id="ovlDeshi" onclick="if(event.target===this)closeSheet('ovlDeshi')"><div class="gcard" role="dialog" aria-modal="true" aria-label="Animaciones de Deshi">
+  <div class="ghead"><div class="gstep" id="dkStep"></div><button class="gclose" onclick="closeSheet('ovlDeshi')" aria-label="Cerrar">✕</button></div>
+  <div class="dk-view">
+    <div class="dk-stage"><span class="deshi" id="dkBig" data-pose="guard" data-cell="3.6"></span></div>
+    <div class="t" id="dkName"></div><div class="u" id="dkUse"></div>
+  </div>
+  <div class="dk-nav"><button onclick="dkStep(-1)" aria-label="Animación anterior">←</button><div class="dk-dots" id="dkDots"></div><button onclick="dkStep(1)" aria-label="Animación siguiente">→</button></div>
 </div></div>
 
 <!-- ══ CALCULADORA % GRASA ══ -->
@@ -1538,7 +1595,7 @@ function authMode(m){
 }
 async function authGo(){
   const e=document.getElementById('auE').value.trim(),p=document.getElementById('auP').value,p2=document.getElementById('auP2').value;
-  const btn=document.getElementById('auGo'),busy=on=>{btn.disabled=on;btn.style.opacity=on?.6:1};
+  const btn=document.getElementById('auGo'),busy=on=>{btn.disabled=on;btn.style.opacity=on?.6:1;Deshi.pose(document.getElementById('auDeshi'),on?'walk':'stand')};
   const redirect=location.origin+location.pathname;
   if(AUTHM!=='newpass'&&!/^\S+@\S+\.\S+$/.test(e))return authMsg('Escribe un email válido.');
   if(AUTHM==='up'||AUTHM==='newpass'){
@@ -1589,7 +1646,7 @@ async function logout(){
   closeSheet('ovlAsk');closeSheet('ovlCfg');
   if(DB._dirty||pushT){const ok=await push();if(!ok){toast('Sin conexión: no se pudo guardar en la nube');return}}
   S.del(uKey());S.del(bKey());S.del(KEY+'_last');BODY.key=null;BODY.data=null;
-  DB=freshDB();started=false;
+  DB=freshDB();started=false;Deshi.setLook();
   document.getElementById('onb').classList.remove('on');document.getElementById('tour').classList.remove('on');closeSheet('ovlProf');
   if(sb)await sb.auth.signOut();
   USER=null;showAuth('Sesión cerrada.',true);
@@ -1987,6 +2044,7 @@ function sanitizeDB(r){
   if(['grasa','musculo','fuerza','salud','deporte'].includes(pf.goal))out.profile.goal=pf.goal;
   if(['n0','n1','n2'].includes(pf.lvl))out.profile.lvl=pf.lvl;
   if(pf.done)out.profile.done=1;
+  if(isObj(pf.deshi)&&window.Deshi)out.profile.deshi=Deshi.cleanLook(pf.deshi);
   // rutina
   out.plan=null;
   if(isObj(r.plan)&&Array.isArray(r.plan.days)){
@@ -2184,20 +2242,24 @@ function renderHoy(){
     '<button class="'+(sn===0?'on':'')+'" onclick="forceDay(0)">Off</button></div>';
 
   const box=document.getElementById('hoyPlan');
+  // Deshi acompaña el estado del día: en guardia, celebrando, en seiza o cansado
+  const dk=(pose,mood,main)=>'<div class="dk-row"><div class="dk-main">'+main+'<div class="dk-mood">Deshi · '+mood+'</div></div>'+
+    '<div class="dk-stage" style="width:108px;height:128px"><span class="deshi" data-pose="'+pose+'" data-cell="1.55"></span></div></div>';
   if(!dayKeys().length){
-    box.innerHTML='<div class="empty">Todavía no tienes rutina.</div><button class="btn acc full" onclick="openTplPicker()">Elegir rutina</button>';
+    box.innerHTML=dk('stand','esperando','<div class="empty">Todavía no tienes rutina.</div>')+'<button class="btn acc full" style="margin-top:11px" onclick="openTplPicker()">Elegir rutina</button>';
   }else if(sn===0){
-    box.innerHTML='<div class="empty">'+(saltada?'Sesión marcada como no hecha.<br>Ya está reprogramada.':'Hoy toca descanso.<br>La recuperación es parte del plan.')+'</div>'+
-      (saltada?'<button class="btn gh full sm" onclick="unskipToday()">Deshacer</button>':'');
+    box.innerHTML=dk(saltada?'tired':'seiza',saltada?'cansado':'seiza','<div class="empty">'+(saltada?'Sesión marcada como no hecha.<br>Ya está reprogramada.':'Hoy toca descanso.<br>La recuperación es parte del plan.')+'</div>')+
+      (saltada?'<button class="btn gh full sm" style="margin-top:7px" onclick="unskipToday()">Deshacer</button>':'');
   }else{
     const p=PLAN[sn],log=DB.sess[T()]?.ex||{};
     const done=p.ex.filter(e=>(log[e.id]||[]).some(x=>x&&x.r)).length;
     const ed=estDur(sn);
     if(!p.ex.length)box.innerHTML='<div style="font-family:Syne;font-size:19px;font-weight:700;margin-bottom:4px">Día '+sn+' · '+p.n+'</div>'+
       '<div class="empty">Este día no tiene ejercicios.</div><button class="btn acc full" onclick="go(\'rutina\')">Añadir ejercicios</button>';
-    else box.innerHTML='<div style="font-family:Syne;font-size:19px;font-weight:700;margin-bottom:4px">Día '+sn+' · '+p.n+'</div>'+
+    else box.innerHTML=dk(hecho?'cheer':'guard',hecho?'celebrando':'en guardia',
+      '<div style="font-family:Syne;font-size:19px;font-weight:700;margin-bottom:4px">Día '+sn+' · '+p.n+'</div>'+
       '<div style="font-size:12px;color:var(--text-dim)">'+p.ex.length+' ejercicios · '+totalSets(sn)+' series · ~'+ed.m+' min</div>'+
-      '<div class="pb" style="margin-top:9px"><i style="width:'+(done/p.ex.length*100)+'%"></i></div>'+
+      '<div class="pb" style="margin-top:9px"><i style="width:'+(done/p.ex.length*100)+'%"></i></div>')+
       '<button class="btn acc full" style="margin-top:11px" onclick="openGuided('+sn+')">'+(done?'Continuar sesión':'Empezar sesión')+'</button>'+
       '<button class="btn gh full sm" style="margin-top:7px" onclick="openDay('+sn+')">Ver la tabla completa</button>'+
       (hecho?'':'<button class="btn gh full sm" style="margin-top:7px;color:var(--accent3)" onclick="skipToday()">Hoy no he podido hacerla</button>');
@@ -2506,8 +2568,9 @@ function renderGS(){
     const d=estDur(GS.day),done=doneSets(GS.day),tot=totalSets(GS.day),rt=rirTarget();
     const log0=DB.sess[T()]?.ex||{};
     b.innerHTML='<div class="ghead"><div class="gstep">Día '+GS.day+'</div>'+TOOLS(0)+'</div>'+
-      '<div class="gex">'+p.n+'</div>'+
-      '<div class="gset">'+tot+' series · '+p.ex.length+' ejercicios · '+rt.r+'</div>'+
+      '<div class="dk-row" style="margin-top:4px"><div class="dk-main"><div class="gex">'+p.n+'</div>'+
+      '<div class="gset">'+tot+' series · '+p.ex.length+' ejercicios · '+rt.r+'</div></div>'+
+      '<div class="dk-stage" style="width:96px;height:118px"><span class="deshi" data-pose="rei" data-cell="1.45"></span></div></div>'+
       '<div class="gdur"><b>~'+d.m+' min</b><s>'+d.src+'</s></div>'+
       '<div class="glab">Toca un ejercicio para empezar por él</div>'+
       p.ex.map((e,i)=>{
@@ -2527,7 +2590,8 @@ function renderGS(){
     const mins=GS.t0?Math.round((Date.now()-GS.t0)/60000):0;
     drawSess(sessProg(GS.day));
     b.innerHTML='<div class="ghead"><div class="gstep">Sesión completada</div>'+TOOLS(1)+'</div>'+
-      '<div class="gex">'+p.n+'</div>'+
+      '<div class="dk-stage" style="height:190px;margin-top:12px"><span class="deshi" data-pose="cheer" data-cell="2.4"></span></div>'+
+      '<div class="gex" style="text-align:center">'+p.n+'</div>'+
       '<div class="gdur"><b>'+mins+' min</b><s>duración real</s></div>'+
       '<div class="glist"><div><span>Series</span><span>'+n+'</span></div>'+
       '<div><span>Tonelaje</span><span>'+Math.round(ton)+' kg</span></div></div>'+
@@ -2580,12 +2644,16 @@ function renderGS(){
           scaleHTML('rir',A.rir);
       }
     }
+    // Deshi descansa en seiza; si la serie fue dura (dos últimos niveles de la escala) recupera el aliento
+    let hard=false;
+    if(GS.ann&&A&&A.rir!=null){const S=SCALES[GS.ann.spd?'car':(GS.ann.seg?'rpe':'rir')].v,ix=S.findIndex(x=>x[0]===A.rir);hard=ix>=0&&Math.round(ix/(S.length-1)*4)>=3}
     b.innerHTML=head+
       '<div class="ghintf">'+nxt+'</div>'+
+      '<div class="gs-rest"><div class="dk-stage" style="width:100px;height:140px"><span class="deshi" data-pose="'+(hard?'tired':'seiza')+'" data-cell="1.65"></span></div>'+
       '<div class="gcircle"><svg width="158" height="158" viewBox="0 0 158 158">'+
       '<circle cx="79" cy="79" r="64" fill="none" stroke="var(--border)" stroke-width="9"/>'+
       '<circle id="gArc" cx="79" cy="79" r="64" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" stroke-dasharray="'+RC+'" stroke-dashoffset="'+(GS.last?0:0)+'"/>'+
-      '</svg><div class="gt2"><b id="gT">'+(GS.last?'✓':'0:00')+'</b><s id="gLab">'+(GS.last?'completado':'descanso')+'</s></div></div>'+
+      '</svg><div class="gt2"><b id="gT">'+(GS.last?'✓':'0:00')+'</b><s id="gLab">'+(GS.last?'completado':'descanso')+'</s></div></div></div>'+
       '<div class="gslot">'+ann+'</div>'+
       tools+(GS.last
         ?'<div class="gbrow"><button class="gnext" onclick="GS.ph=\'done\';renderGS()">Terminar sesión</button></div>'
@@ -3154,6 +3222,11 @@ function drawCons(){
   while((byW[wk]||0)>=per){streak++;wk=shiftD(wk,-7)}
   document.getElementById('consStats').innerHTML=
     st((byW[thisW]||0),'/'+per,'ESTA SEMANA')+st(streak,'sem','RACHA')+st(done.length,'','SESIONES');
+  // racha perdida (hubo alguna semana completa antes): Deshi caído, con el camino para volver
+  const lost=!streak&&weeks.slice(0,7).some(wk=>(byW[wk]||0)>=per);
+  document.getElementById('consPause').innerHTML=lost
+    ?'<div class="dk-pause"><div class="dk-stage" style="width:120px;height:92px"><span class="deshi" data-pose="down" data-cell="1.7"></span></div>'+
+      '<div style="min-width:0"><b>Racha en pausa</b><span>Toda caída tiene su ukemi. Completa esta semana y la racha vuelve a contar.</span></div></div>':'';
 }
 /* récords personales */
 function prData(){
@@ -3581,15 +3654,45 @@ const SEXES={m:'Hombre',f:'Mujer',x:'Prefiero no decirlo'};
 let PF={};
 function profile(){return DB.profile||{}}
 function recommendTpl(p,nd){return rankTpls(p,nd)[0]}
-function avatarHTML(){
-  const n=(profile().name||'').trim();
-  return n?esc(n[0].toUpperCase())
-    :'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>';
-}
+/* el avatar es la cabeza de Deshi, con los colores que el alumno elige en su perfil */
+function avatarHTML(box){return '<span class="deshi" data-pose="stand" data-crop="head" data-box="'+(box||34)+'" data-still></span>'}
 function renderAvatar(){
+  Deshi.setLook(profile().deshi);
   const b=document.getElementById('btnProfile');if(!b)return;
-  b.innerHTML=avatarHTML();b.classList.toggle('has-name',!!(profile().name||'').trim());
+  b.innerHTML=avatarHTML(32);b.classList.add('dk-av');
 }
+function renderDkPick(){
+  const L=Deshi.getLook(),chip=(on,js,inner,lbl)=>'<button type="button" class="dk-chip'+(on?' on':'')+'" aria-pressed="'+on+'" aria-label="'+lbl+'" onclick="'+js+'">'+inner+'</button>';
+  document.getElementById('dkPick').innerHTML=
+    '<div class="dk-lab">Cinturón · '+L.belt+'</div><div class="dk-chips">'+
+      Object.entries(Deshi.BELTS).map(([k,c])=>chip(L.belt===k,"dkSet('belt','"+k+"')",'<i class="belt" style="background:'+c+'"></i>','Cinturón '+k)).join('')+'</div>'+
+    '<div class="dk-2"><div><div class="dk-lab">Piel</div><div class="dk-chips">'+
+      Deshi.SKINS.map(([n,c],i)=>chip(L.skin===i,"dkSet('skin',"+i+")",'<i style="background:'+c+'"></i>','Tono de piel '+n)).join('')+'</div></div>'+
+    '<div><div class="dk-lab">Pelo</div><div class="dk-chips">'+
+      Deshi.HAIRS.map(([n,c],i)=>chip(L.hair===i,"dkSet('hair',"+i+")",'<i style="background:'+c+'"></i>','Pelo '+n)).join('')+'</div></div></div>'+
+    '<div class="dk-lab">Gi</div><div class="dk-chips">'+
+      Deshi.GIS.map(([n,c],i)=>chip(L.gi===i,"dkSet('gi',"+i+")",'<i style="background:'+c+'"></i>'+n,'Gi '+n)).join('')+'</div>';
+}
+function dkSet(k,v){
+  const L=Deshi.getLook();L[k]=v;
+  DB.profile=Object.assign({},profile(),{deshi:Deshi.setLook(L)});
+  save();renderDkPick();
+}
+let DKI=0;
+function openDkView(){DKI=0;renderDkView();document.getElementById('ovlDeshi').classList.add('on')}
+function dkStep(d){const n=Deshi.ORDER.length;DKI=(DKI+d+n)%n;renderDkView()}
+function renderDkView(){
+  const O=Deshi.ORDER,p=O[DKI],N=Deshi.NAMES[p];
+  document.getElementById('dkStep').textContent='Animaciones · '+(DKI+1)+' de '+O.length;
+  Deshi.pose(document.getElementById('dkBig'),p);
+  document.getElementById('dkName').textContent=N[0];
+  document.getElementById('dkUse').textContent=N[1];
+  document.getElementById('dkDots').innerHTML=O.map((x,i)=>'<i class="'+(i===DKI?'on':'')+'"></i>').join('');
+}
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('ovlDeshi')?.classList.contains('on'))return;
+  if(e.key==='ArrowLeft')dkStep(-1);else if(e.key==='ArrowRight')dkStep(1);else if(e.key==='Escape')closeSheet('ovlDeshi');
+});
 /* campos del perfil: se usan en el panel 👤 y en la configuración inicial */
 function profFields(boxId){
   const box=document.getElementById(boxId);if(!box)return;
@@ -3607,7 +3710,8 @@ function profFields(boxId){
 function openProfile(){
   PF=Object.assign({},profile());
   const p=profile();
-  document.getElementById('profAv').innerHTML=avatarHTML();
+  const av=document.getElementById('profAv');av.innerHTML=avatarHTML(50);av.classList.add('dk-av');
+  renderDkPick();
   document.getElementById('profName').textContent=(p.name||'').trim()||'Tu perfil';
   document.getElementById('profMail').textContent=USER?USER.email:'Modo local, sin cuenta';
   profFields('profForm');
